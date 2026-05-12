@@ -26,5 +26,7 @@ clique 2 fois sur le premier logo 2 fois sur le second et une fois sur le logo h
 -> infrastructure temporaire viable mais pour la maintenabilité bro jte conseille de mettre ca en ligne 
 j'ai mis en place un système de mise a jour automatique si il est sur le réseaux ca fonctionne comme une app même si ca n'en n'est pas une 
 
+Si tu veux en faire un site j'ai oublier la partie SEO pour le référencement google donc ya encore un peu de taff 
+Pas un soucis pour les tablettes en local
 
  
