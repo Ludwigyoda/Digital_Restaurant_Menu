@@ -10,9 +10,10 @@ type Props = {
   activeCat: string;
   activeSub: string;
   onSelect: (catId: string, subId: string) => void;
+  onLogoTap?: (id: "lalupita" | "revo" | "halal") => void;
 };
 
-export function TopNav({ activeCat, activeSub, onSelect }: Props) {
+export function TopNav({ activeCat, activeSub, onSelect, onLogoTap }: Props) {
   const [openCat, setOpenCat] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -28,16 +29,34 @@ export function TopNav({ activeCat, activeSub, onSelect }: Props) {
     <nav ref={ref} className="border-b border-border/60">
       <div className="flex items-center gap-4 px-4 sm:px-8 py-4">
         <div className="shrink-0 flex items-center gap-4">
-          <img
-            src={logo}
-            alt="La Lupita Taqueria"
-            className="h-12 w-auto object-contain"
-          />
-          <img
-            src={revoLogo}
-            alt="Revolucion Cocktail"
-            className="h-12 w-auto object-contain"
-          />
+          <button
+            type="button"
+            onClick={() => onLogoTap?.("lalupita")}
+            aria-label="La Lupita"
+            className="rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <img
+              src={logo}
+              alt="La Lupita Taqueria"
+              width={120}
+              height={48}
+              className="h-12 w-auto object-contain pointer-events-none"
+            />
+          </button>
+          <button
+            type="button"
+            onClick={() => onLogoTap?.("revo")}
+            aria-label="Revolución"
+            className="rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <img
+              src={revoLogo}
+              alt="Revolucion Cocktail"
+              width={120}
+              height={48}
+              className="h-12 w-auto object-contain pointer-events-none"
+            />
+          </button>
         </div>
         <ul className="flex items-center gap-1 flex-wrap">
           {MENU.map((cat) => {
@@ -93,11 +112,20 @@ export function TopNav({ activeCat, activeSub, onSelect }: Props) {
           })}
         </ul>
         <div className="ml-auto flex items-center gap-3 shrink-0">
-          <img
-            src={halal}
-            alt="Mexican Halal Food 100%"
-            className="h-12 w-12 object-contain"
-          />
+          <button
+            type="button"
+            onClick={() => onLogoTap?.("halal")}
+            aria-label="Halal certified"
+            className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <img
+              src={halal}
+              alt="Mexican Halal Food 100%"
+              width={48}
+              height={48}
+              className="h-12 w-12 object-contain pointer-events-none"
+            />
+          </button>
           <LangSwitcher />
         </div>
       </div>

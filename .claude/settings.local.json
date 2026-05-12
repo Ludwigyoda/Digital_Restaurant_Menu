@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(bun run *)",
-      "PowerShell(bun run lint 2>&1)"
+      "PowerShell(bun run lint 2>&1)",
+      "PowerShell(npm uninstall class-variance-authority tw-animate-css zod 2>&1)",
+      "PowerShell(npm run build 2>&1)"
     ]
   }
 }

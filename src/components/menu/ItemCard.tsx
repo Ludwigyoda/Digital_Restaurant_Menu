@@ -49,6 +49,8 @@ export function ItemCard({
             src={image}
             alt={item.nameEn}
             loading="lazy"
+            width={1024}
+            height={768}
             className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.04]"
           />
         ) : (

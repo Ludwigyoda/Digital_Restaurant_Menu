@@ -279,6 +279,19 @@ export const MENU: Category[] = [
               { id: "mt-yu-garden", nameEn: "Yu Garden", nameZh: "YU GARDEN", descEn: "Apple juice, cardamon seed, pear puree, pandan syrup, kaffir leaves", descZh: "苹果汁、豆蔻种子、梨子果茸、斑兰糖浆、泰国青柠叶", price: 60 },
             ],
           },
+          {
+            id: "lupita-cocktails",
+            nameEn: "Lupita Cocktails",
+            nameZh: "露佩塔特调",
+            items: [
+              { id: "lc-frozen-margarita-glass", nameEn: "Frozen Margarita (Glass)", nameZh: "冰冻玛格丽特（杯）", price: 80, accent: "saffron" },
+              { id: "lc-frozen-margarita-jug", nameEn: "Frozen Margarita (Jug 1L)", nameZh: "冰冻玛格丽特（1升壶）", price: 198, accent: "saffron" },
+              { id: "lc-paloma-lupita", nameEn: "Paloma", nameZh: "帕洛玛", price: 80, accent: "fuchsia-mx" },
+              { id: "lc-cantarito", nameEn: "Cantarito", nameZh: "坎塔里托", price: 80, accent: "terracotta" },
+              { id: "lc-batanga", nameEn: "Batanga", nameZh: "巴坦加", price: 80, accent: "terracotta" },
+              { id: "lc-margarita-lupita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "cactus" },
+            ],
+          },
         ],
       },
       {
@@ -320,6 +333,29 @@ export const MENU: Category[] = [
         items: [
           { id: "be-corona", nameEn: "Corona", nameZh: "科罗娜", price: 40, priceAlt: [{ label: "×1", value: 40 }, { label: "×12", value: 420 }] },
           { id: "be-hoegaarden", nameEn: "Hoegaarden White", nameZh: "福佳白啤酒", price: 50, priceAlt: [{ label: "×1", value: 50 }, { label: "×12", value: 500 }] },
+          { id: "be-chelada", nameEn: "Chelada", nameZh: "切拉达", price: 45 },
+          { id: "be-michelada", nameEn: "Michelada", nameZh: "米切拉达", price: 80 },
+          { id: "be-coronarita", nameEn: "Coronarita", nameZh: "科罗娜玛格丽特", price: 90 },
+          { id: "be-carlsberg", nameEn: "Carlsberg (Draft)", nameZh: "嘉士伯生啤", price: 55 },
+          { id: "be-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60 },
+          { id: "be-carlsberg-tower", nameEn: "Carlsberg Tower", nameZh: "嘉士伯酒塔", price: 248 },
+          { id: "be-ducato-tower", nameEn: "Ducato IPA Tower", nameZh: "杜卡托IPA酒塔", price: 298 },
+          { id: "be-blanche-bruges", nameEn: "Blanche de Bruges", nameZh: "布鲁日白啤", descEn: "33cl", price: 40 },
+          { id: "be-rose-bruges", nameEn: "Rosé de Bruges", nameZh: "布鲁日玫瑰", descEn: "33cl", price: 45 },
+          { id: "be-vedett-elderflower", nameEn: "Vedett Extra Elderflower", nameZh: "白熊接骨木花", descEn: "33cl", price: 45 },
+          { id: "be-duvel-citra", nameEn: "Duvel Tripel Hop Citra", nameZh: "督威三倍啤酒", descEn: "33cl", price: 60 },
+        ],
+      },
+      {
+        id: "happy-hours",
+        nameEn: "Happy Hours",
+        nameZh: "欢乐时光",
+        defaultAccent: "saffron",
+        items: [
+          { id: "hh-corona", nameEn: "Corona", nameZh: "科罗娜", price: 40, accent: "saffron" },
+          { id: "hh-carlsberg", nameEn: "Carlsberg", nameZh: "嘉士伯", price: 55, accent: "saffron" },
+          { id: "hh-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60, accent: "saffron" },
+          { id: "hh-margarita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "fuchsia-mx" },
         ],
       },
       {
@@ -339,6 +375,15 @@ export const MENU: Category[] = [
               { id: "sd-ginger-ale", nameEn: "Ginger Ale", nameZh: "姜汁汽水", price: 30 },
               { id: "sd-soda", nameEn: "Soda Water", nameZh: "苏打水", price: 30 },
               { id: "sd-tonic", nameEn: "Tonic Water", nameZh: "汤力水", price: 30 },
+              { id: "sd-lemonade-tea", nameEn: "Ice Lemonade Tea", nameZh: "冰柠檬茶", price: 30 },
+            ],
+          },
+          {
+            id: "juices",
+            nameEn: "Juices",
+            nameZh: "果汁",
+            items: [
+              { id: "sd-jamaica", nameEn: "Jamaica Water", nameZh: "洛神花水", price: 40 },
             ],
           },
           {

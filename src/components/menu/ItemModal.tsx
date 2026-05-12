@@ -51,6 +51,8 @@ export function ItemModal({
             <img
               src={ITEM_IMAGES[item.id]}
               alt={item.nameEn}
+              width={1024}
+              height={768}
               className="h-full w-full object-cover"
             />
           )}

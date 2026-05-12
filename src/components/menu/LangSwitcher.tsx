@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 type Lang = "en" | "zh" | "both";
 const OPTIONS: { id: Lang; label: string }[] = [
+  { id: "both", label: "EN+中" },
   { id: "en", label: "EN" },
   { id: "zh", label: "中" },
-  { id: "both", label: "EN+中" },
 ];
 
 const STORAGE_KEY = "lang";

@@ -16,6 +16,14 @@ dist-ssr
 .nitro
 *.local
 
+# This project is bun-managed (bun.lock). The npm lockfile is generated only
+# as a local fallback when bun is not installed — never commit it.
+package-lock.json
+
+# Capacitor Android project (regenerated via `bunx cap add android`)
+android
+resources
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
