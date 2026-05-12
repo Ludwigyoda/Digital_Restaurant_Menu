@@ -20,6 +20,7 @@ export type SubCategory = {
   id: string;
   nameEn: string;
   nameZh: string;
+  defaultAccent?: NonNullable<Item["accent"]>;
   items?: Item[];
   groups?: SubGroup[];
 };
@@ -45,6 +46,7 @@ export const MENU: Category[] = [
         id: "finger-food",
         nameEn: "Finger Food",
         nameZh: "分享小食",
+        defaultAccent: "saffron",
         groups: [
           {
             id: "appetizers",
@@ -84,6 +86,7 @@ export const MENU: Category[] = [
         id: "platos",
         nameEn: "Platos",
         nameZh: "主菜",
+        defaultAccent: "terracotta",
         groups: [
           {
             id: "quesadillas",
@@ -158,11 +161,12 @@ export const MENU: Category[] = [
         id: "tacos",
         nameEn: "Tacos",
         nameZh: "墨西哥塔可",
+        defaultAccent: "cactus",
         groups: [
           {
             id: "tc-pieces",
-            nameEn: "Tacos (3 pcs)",
-            nameZh: "塔可三件套",
+            nameEn: "Trio",
+            nameZh: "三件套",
             items: [
               { id: "tc-birria", nameEn: "Tacos de Birria", nameZh: "炖牛肉塔可", descEn: "Slow-cooked beef cheek with herbs and chili", descZh: "慢炖牛腮肉配香草和辣椒", price: 78 },
               { id: "tc-pastor", nameEn: "Tacos Chicken Pastor", nameZh: "墨西哥帕多斯烤鸡肉塔可", descEn: "Marinated chicken, served with onion and coriander", descZh: "腌制鸡肉、洋葱、芫荽", price: 68 },
@@ -188,6 +192,7 @@ export const MENU: Category[] = [
         id: "desserts",
         nameEn: "Desserts",
         nameZh: "甜点",
+        defaultAccent: "fuchsia-mx",
         items: [
           { id: "ds-churros", nameEn: "Churros", nameZh: "墨西哥油条", descEn: "Churros with chocolate sauce", descZh: "墨西哥油条配巧克力酱", price: 38 },
           { id: "ds-churros-condensado", nameEn: "Churros Condensado", nameZh: "浓缩巧克力蛋糕", descEn: "Churros with milk condensed sauce", descZh: "牛奶浓缩酱巧克力蛋糕", price: 48 },
@@ -206,6 +211,7 @@ export const MENU: Category[] = [
         id: "cocktails",
         nameEn: "Cocktails",
         nameZh: "鸡尾酒",
+        defaultAccent: "talavera",
         groups: [
           {
             id: "signature",
@@ -279,6 +285,7 @@ export const MENU: Category[] = [
         id: "shots",
         nameEn: "Shots",
         nameZh: "子弹杯",
+        defaultAccent: "fuchsia-mx",
         items: [
           { id: "sh-tequila", nameEn: "Tequila Shot", nameZh: "龙舌兰子弹杯", price: 35, priceAlt: [{ label: "×1", value: 35 }, { label: "×12", value: 380 }], accent: "fuchsia-mx" },
           { id: "sh-fireball", nameEn: "Fireball", nameZh: "火球", price: 40, priceAlt: [{ label: "×1", value: 40 }, { label: "×12", value: 400 }], accent: "fuchsia-mx" },
@@ -298,6 +305,7 @@ export const MENU: Category[] = [
         id: "wines",
         nameEn: "Wines",
         nameZh: "红酒",
+        defaultAccent: "terracotta",
         items: [
           { id: "wn-white", nameEn: "House White Wine", nameZh: "招牌白葡萄酒", price: 60, priceAlt: [{ label: "Glass", value: 60 }, { label: "Bottle", value: 320 }] },
           { id: "wn-prosecco", nameEn: "House Prosecco Wine", nameZh: "招牌起泡酒", price: 70, priceAlt: [{ label: "Glass", value: 70 }, { label: "Bottle", value: 390 }] },
@@ -308,6 +316,7 @@ export const MENU: Category[] = [
         id: "beers",
         nameEn: "Beers",
         nameZh: "啤酒",
+        defaultAccent: "saffron",
         items: [
           { id: "be-corona", nameEn: "Corona", nameZh: "科罗娜", price: 40, priceAlt: [{ label: "×1", value: 40 }, { label: "×12", value: 420 }] },
           { id: "be-hoegaarden", nameEn: "Hoegaarden White", nameZh: "福佳白啤酒", price: 50, priceAlt: [{ label: "×1", value: 50 }, { label: "×12", value: 500 }] },
@@ -317,6 +326,7 @@ export const MENU: Category[] = [
         id: "softs",
         nameEn: "Soft Drinks",
         nameZh: "软饮",
+        defaultAccent: "talavera",
         groups: [
           {
             id: "softs-30",
@@ -354,6 +364,7 @@ export const MENU: Category[] = [
         id: "shisha",
         nameEn: "Shisha",
         nameZh: "水烟",
+        defaultAccent: "cactus",
         groups: [
           {
             id: "lavii",

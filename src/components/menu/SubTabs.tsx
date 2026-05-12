@@ -21,7 +21,7 @@ export function SubTabs({ category, activeSub, onSelect }: Props) {
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <span className="font-display text-base">{sub.nameEn}</span>
+            <span className="en-text font-display text-base">{sub.nameEn}</span>
             <span className="zh text-xs opacity-70">{sub.nameZh}</span>
           </button>
         );

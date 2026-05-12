@@ -1,7 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, type PanInfo } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MENU, type Item } from "@/data/menu";
 import { TopNav } from "@/components/menu/TopNav";
 import { SubTabs } from "@/components/menu/SubTabs";
@@ -13,9 +11,7 @@ export const Route = createFileRoute("/")({
   component: MenuPage,
 });
 
-// Flat sequence of (catId, subId, groupId?) so swipe/arrows traverse every group
-// (e.g. Finger Food > Appetizers → Ceviches → Bar Snacks → Platos > Quesadillas → …)
-// instead of jumping straight from sub-cat to sub-cat.
+// Flat sequence of (catId, subId, groupId?) so swipe traverses every group.
 type Step = { catId: string; subId: string; groupId?: string };
 const STEPS: Step[] = MENU.flatMap((c) =>
   c.subs.flatMap((s) =>
@@ -32,7 +28,6 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
   return out;
 };
 
-// Adaptive grid: small sections fill the canvas elegantly instead of leaving empty cells.
 function getGridLayout(count: number) {
   if (count <= 1) return { gridClass: "grid-cols-1 grid-rows-1", heroSpan: "" };
   if (count === 2) return { gridClass: "grid-cols-2 grid-rows-1", heroSpan: "" };
@@ -41,12 +36,23 @@ function getGridLayout(count: number) {
   return { gridClass: "grid-cols-4 grid-rows-2", heroSpan: "col-span-2 row-span-2" };
 }
 
+const IDLE_WARNING_MS = 100_000;
+const IDLE_RESET_MS = 120_000;
+const WARNING_WINDOW_S = 20;
+const SWIPE_THRESHOLD_PX = 60;
+const SWIPE_VELOCITY_PX_PER_S = 400;
+
 function MenuPage() {
   const [stepIdx, setStepIdx] = useState(0);
   const [pageIdx, setPageIdx] = useState(0);
   const [openItem, setOpenItem] = useState<Item | null>(null);
   const [direction, setDirection] = useState(0);
-  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [warningSecondsLeft, setWarningSecondsLeft] = useState<number | null>(null);
+  const warningTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const countdownInterval = useRef<ReturnType<typeof setInterval> | null>(null);
+  const dragState = useRef<{ startX: number; startTime: number; deltaX: number } | null>(null);
+  const canvasRef = useRef<HTMLDivElement | null>(null);
 
   const { catId: activeCat, subId: activeSub, groupId: activeGroup } = STEPS[stepIdx];
 
@@ -58,7 +64,6 @@ function MenuPage() {
     () => category.subs.find((s) => s.id === activeSub) ?? category.subs[0],
     [category, activeSub],
   );
-
   const group = useMemo(() => {
     if (!sub.groups) return null;
     return sub.groups.find((g) => g.id === activeGroup) ?? sub.groups[0];
@@ -69,6 +74,7 @@ function MenuPage() {
   const pages = useMemo(() => chunk(allItems, itemsPerPage), [allItems, itemsPerPage]);
   const items = pages[Math.min(pageIdx, pages.length - 1)] ?? [];
   const layout = getGridLayout(items.length);
+  const fallbackAccent = sub.defaultAccent;
 
   const goToStep = (idx: number, dir: number) => {
     const next = Math.max(0, Math.min(STEPS.length - 1, idx));
@@ -95,26 +101,47 @@ function MenuPage() {
     }
   };
 
-  // Idle reset
+  // Idle reset with 20s countdown warning at 100s, hard reset at 120s.
   useEffect(() => {
-    const reset = () => {
-      if (idleTimer.current) clearTimeout(idleTimer.current);
-      idleTimer.current = setTimeout(() => {
-        setStepIdx(0);
-        setPageIdx(0);
-        setOpenItem(null);
-      }, 90_000);
+    const clearAll = () => {
+      if (warningTimer.current) clearTimeout(warningTimer.current);
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+      if (countdownInterval.current) clearInterval(countdownInterval.current);
     };
-    reset();
+
+    const performReset = () => {
+      setStepIdx(0);
+      setPageIdx(0);
+      setOpenItem(null);
+      setWarningSecondsLeft(null);
+    };
+
+    const startWarning = () => {
+      setWarningSecondsLeft(WARNING_WINDOW_S);
+      countdownInterval.current = setInterval(() => {
+        setWarningSecondsLeft((s) => (s !== null && s > 0 ? s - 1 : 0));
+      }, 1000);
+      resetTimer.current = setTimeout(() => {
+        if (countdownInterval.current) clearInterval(countdownInterval.current);
+        performReset();
+      }, IDLE_RESET_MS - IDLE_WARNING_MS);
+    };
+
+    const armTimers = () => {
+      clearAll();
+      setWarningSecondsLeft(null);
+      warningTimer.current = setTimeout(startWarning, IDLE_WARNING_MS);
+    };
+
+    armTimers();
     const events = ["pointerdown", "keydown", "touchstart"];
-    events.forEach((e) => window.addEventListener(e, reset));
+    events.forEach((e) => window.addEventListener(e, armTimers));
     return () => {
-      events.forEach((e) => window.removeEventListener(e, reset));
-      if (idleTimer.current) clearTimeout(idleTimer.current);
+      events.forEach((e) => window.removeEventListener(e, armTimers));
+      clearAll();
     };
   }, []);
 
-  // Keyboard arrows
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") next();
@@ -139,10 +166,28 @@ function MenuPage() {
     if (idx >= 0) goToStep(idx, idx > stepIdx ? 1 : -1);
   };
 
-  const onDragEnd = (_: unknown, info: PanInfo) => {
-    const threshold = 60;
-    if (info.offset.x < -threshold || info.velocity.x < -400) next();
-    else if (info.offset.x > threshold || info.velocity.x > 400) prev();
+  // Custom swipe handlers (replaces Framer Motion drag).
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragState.current = { startX: e.clientX, startTime: Date.now(), deltaX: 0 };
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current) return;
+    dragState.current.deltaX = e.clientX - dragState.current.startX;
+    if (canvasRef.current) {
+      // Subtle elastic drag follow
+      canvasRef.current.style.transform = `translateX(${dragState.current.deltaX * 0.4}px)`;
+    }
+  };
+  const onPointerUp = () => {
+    if (!dragState.current) return;
+    const { deltaX, startTime } = dragState.current;
+    const elapsed = Math.max((Date.now() - startTime) / 1000, 0.01);
+    const velocity = Math.abs(deltaX) / elapsed;
+    dragState.current = null;
+    if (canvasRef.current) canvasRef.current.style.transform = "";
+    if (deltaX < -SWIPE_THRESHOLD_PX || (deltaX < 0 && velocity > SWIPE_VELOCITY_PX_PER_S)) next();
+    else if (deltaX > SWIPE_THRESHOLD_PX || (deltaX > 0 && velocity > SWIPE_VELOCITY_PX_PER_S)) prev();
   };
 
   return (
@@ -158,26 +203,42 @@ function MenuPage() {
         onSelect={handleSubSelect}
       />
 
+      {/* Breadcrumb of progression */}
+      <div className="flex items-center justify-between px-4 sm:px-8 py-1 text-[10px] uppercase tracking-[0.3em] text-muted-foreground/70 border-b border-border/30">
+        <span>
+          <span className="en-text">{sub.nameEn}</span>
+          {group && (
+            <>
+              <span className="opacity-50"> · </span>
+              <span className="en-text">{group.nameEn}</span>
+            </>
+          )}
+        </span>
+        <span className="tabular">
+          {stepIdx + 1} / {STEPS.length}
+        </span>
+      </div>
+
       <section className="relative flex flex-1 overflow-hidden">
-        {/* Left rail: cocktail group selector (moved from right to left) */}
+        {/* Left rail — always visible */}
         {sub.groups && (
           <aside className="hidden md:flex w-44 shrink-0 flex-col gap-1 border-r border-border/50 px-3 py-6">
             <div className="mb-3 px-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-              {sub.nameEn}
+              <span className="en-text">{sub.nameEn}</span>
             </div>
             {sub.groups.map((g) => {
               const active = g.id === activeGroup;
               return (
-              <button
+                <button
                   key={g.id}
                   onClick={() => handleGroupSelect(g.id)}
-                  className={`rounded-xl px-3 py-3 text-left transition-colors min-h-[44px] ${
+                  className={`rounded-xl px-3 py-3 text-left transition-colors min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                     active
                       ? "bg-secondary text-foreground"
                       : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
                   }`}
                 >
-                  <div className="font-display text-base leading-tight">
+                  <div className="en-text font-display text-base leading-tight">
                     {g.nameEn}
                   </div>
                   <div className="zh text-[11px] opacity-70">{g.nameZh}</div>
@@ -187,61 +248,43 @@ function MenuPage() {
           </aside>
         )}
 
-        <div className="relative flex-1 overflow-hidden">
-          {/* Prev/Next arrows */}
-          <button
-            onClick={prev}
-            disabled={stepIdx === 0 && pageIdx === 0}
-            aria-label="Previous"
-            className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur p-3 shadow-lg border border-border/60 disabled:opacity-30 hover:bg-background transition-colors"
+        <div
+          className="relative flex-1 overflow-hidden touch-pan-y"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+        >
+          <div
+            ref={canvasRef}
+            key={`${activeCat}-${activeSub}-${activeGroup}-${pageIdx}`}
+            className={`absolute inset-0 px-4 sm:px-8 py-6 pb-10 cursor-grab active:cursor-grabbing ${
+              direction >= 0 ? "anim-slide-in-right" : "anim-slide-in-left"
+            }`}
           >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            onClick={next}
-            disabled={stepIdx === STEPS.length - 1 && pageIdx === pages.length - 1}
-            aria-label="Next"
-            className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur p-3 shadow-lg border border-border/60 disabled:opacity-30 hover:bg-background transition-colors"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
+            <div className={`grid h-full w-full gap-3 sm:gap-4 ${layout.gridClass}`}>
+              {items.map((item, i) => (
+                <ItemCard
+                  key={item.id}
+                  item={item}
+                  index={i}
+                  onOpen={setOpenItem}
+                  spanClass={i === 0 ? layout.heroSpan : ""}
+                  fallbackAccent={fallbackAccent}
+                  isHero={i === 0 && layout.heroSpan !== ""}
+                />
+              ))}
+            </div>
+          </div>
 
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={`${activeCat}-${activeSub}-${activeGroup}-${pageIdx}`}
-              custom={direction}
-              initial={{ opacity: 0, x: direction >= 0 ? 60 : -60 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction >= 0 ? -60 : 60 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.2}
-              onDragEnd={onDragEnd}
-              className="absolute inset-0 px-4 sm:px-8 py-6 pb-10 cursor-grab active:cursor-grabbing"
-            >
-              <div className={`grid h-full w-full gap-3 sm:gap-4 ${layout.gridClass}`}>
-                {items.map((item, i) => (
-                  <ItemCard
-                    key={item.id}
-                    item={item}
-                    index={i}
-                    onOpen={setOpenItem}
-                    spanClass={i === 0 ? layout.heroSpan : ""}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Page indicator within current sub */}
+          {/* Page indicator within current group */}
           {pages.length > 1 && (
             <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 flex gap-1.5">
               {pages.map((_, i) => (
                 <span
                   key={i}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === pageIdx ? "w-6 bg-foreground" : "w-1.5 bg-foreground/30"
+                  className={`h-2 rounded-full transition-all ${
+                    i === pageIdx ? "w-8 bg-foreground" : "w-2 bg-foreground/30"
                   }`}
                 />
               ))}
@@ -250,13 +293,24 @@ function MenuPage() {
         </div>
       </section>
 
-      <footer className="flex items-center justify-between gap-4 border-t border-border/60 px-4 sm:px-8 py-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-        <span>La Lupita Taqueria</span>
+      <footer className="flex items-center justify-end border-t border-border/60 px-4 sm:px-8 py-3">
         <UpdateButton />
-        <span>Revolucion Cocktail Bar</span>
       </footer>
 
-      <ItemModal item={openItem} onClose={() => setOpenItem(null)} />
+      <ItemModal
+        item={openItem}
+        isDrink={activeCat === "drinks"}
+        onClose={() => setOpenItem(null)}
+      />
+
+      {warningSecondsLeft !== null && (
+        <div className="anim-drop-up pointer-events-none fixed bottom-20 left-1/2 z-[70] -translate-x-1/2 rounded-full bg-foreground/90 px-6 py-3 text-background shadow-2xl backdrop-blur">
+          <span className="text-xs uppercase tracking-[0.25em]">
+            <span className="en-text">Returning to start in {warningSecondsLeft}s · tap to cancel</span>
+            <span className="zh">{warningSecondsLeft} 秒后返回起点 · 点击取消</span>
+          </span>
+        </div>
+      )}
     </main>
   );
 }

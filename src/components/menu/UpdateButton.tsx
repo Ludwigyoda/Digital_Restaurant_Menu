@@ -28,7 +28,7 @@ export function UpdateButton() {
       onClick={handleUpdate}
       disabled={!online}
       aria-label={online ? "Refresh menu" : "No network connection"}
-      className={`flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] transition-colors min-h-[36px] ${
+      className={`flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] transition-colors min-h-[36px] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
         online
           ? "text-foreground/80 hover:bg-secondary cursor-pointer"
           : "text-muted-foreground/60 cursor-not-allowed opacity-70"

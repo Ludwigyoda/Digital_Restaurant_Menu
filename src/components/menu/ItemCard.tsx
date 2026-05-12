@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
+import { Plus } from "lucide-react";
 import type { Item } from "@/data/menu";
 import { PriceTag } from "./PriceTag";
 import { ITEM_IMAGES } from "@/data/itemImages";
 import { hasCJK } from "@/lib/i18n";
+import { ALLERGEN_META, detectAllergens } from "@/lib/allergens";
 
 const accentMap: Record<NonNullable<Item["accent"]>, string> = {
   terracotta: "var(--terracotta)",
@@ -17,24 +18,30 @@ export function ItemCard({
   index,
   onOpen,
   spanClass = "",
+  fallbackAccent,
+  isHero = false,
 }: {
   item: Item;
   index: number;
   onOpen?: (item: Item) => void;
   spanClass?: string;
+  fallbackAccent?: NonNullable<Item["accent"]>;
+  isHero?: boolean;
 }) {
-  const accent = item.accent ? accentMap[item.accent] : "var(--terracotta)";
+  const resolvedAccent = item.accent ?? fallbackAccent ?? "terracotta";
+  const accent = accentMap[resolvedAccent];
   const image = ITEM_IMAGES[item.id];
   const showZh = hasCJK(item.nameZh);
+  const allergens = detectAllergens(item);
+  // Compact card shows max 3 emojis, hero up to 5
+  const visibleAllergens = allergens.slice(0, isHero ? 5 : 3);
 
   return (
-    <motion.button
+    <button
       type="button"
       onClick={() => onOpen?.(item)}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: Math.min(index * 0.03, 0.3) }}
-      className={`group relative block h-full w-full overflow-hidden rounded-2xl border border-border/50 bg-card text-left transition-all duration-300 hover:border-border focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${spanClass}`}
+      style={{ animationDelay: `${Math.min(index * 0.02, 0.12)}s` }}
+      className={`anim-fade-up group relative block h-full w-full overflow-hidden rounded-2xl border border-border/50 bg-card text-left transition-colors hover:border-border focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${spanClass}`}
     >
       <div className="relative h-full w-full overflow-hidden bg-secondary">
         {image ? (
@@ -42,7 +49,7 @@ export function ItemCard({
             src={image}
             alt={item.nameEn}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.04]"
           />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-secondary to-card" />
@@ -52,7 +59,7 @@ export function ItemCard({
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/55 to-transparent p-4 pt-10">
           <div className="flex items-end justify-between gap-3">
             <div className="min-w-0">
-              <h3 className="font-display text-lg leading-tight text-white truncate">
+              <h3 className="en-text font-display text-lg leading-tight text-white truncate">
                 {item.nameEn}
               </h3>
               {showZh && (
@@ -60,10 +67,25 @@ export function ItemCard({
                   {item.nameZh}
                 </p>
               )}
-              {item.descEn && (
-                <p className="mt-1 line-clamp-2 text-[11px] text-white/60">
+              {isHero && item.descEn && (
+                <p className="en-text mt-1 line-clamp-2 text-[11px] text-white/60">
                   {item.descEn}
                 </p>
+              )}
+              {visibleAllergens.length > 0 && (
+                <div
+                  className="mt-1.5 flex items-center gap-1 text-[12px]"
+                  aria-label="Allergens"
+                >
+                  {visibleAllergens.map((id) => (
+                    <span
+                      key={id}
+                      title={`${ALLERGEN_META[id].en} · ${ALLERGEN_META[id].zh}`}
+                    >
+                      {ALLERGEN_META[id].emoji}
+                    </span>
+                  ))}
+                </div>
               )}
             </div>
             <div className="shrink-0 text-white">
@@ -90,12 +112,18 @@ export function ItemCard({
           </div>
         </div>
 
+        {/* Accent-ringed Plus affordance: signals tap-for-details + colors per category */}
         <span
           aria-hidden
-          className="absolute right-3 top-3 h-1.5 w-1.5 rounded-full"
-          style={{ background: accent, boxShadow: `0 0 10px ${accent}` }}
-        />
+          className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-transform duration-200 group-hover:scale-110"
+          style={{
+            border: `1.5px solid ${accent}`,
+            boxShadow: `0 0 8px ${accent}`,
+          }}
+        >
+          <Plus className="h-3.5 w-3.5 text-white/90" />
+        </span>
       </div>
-    </motion.button>
+    </button>
   );
 }

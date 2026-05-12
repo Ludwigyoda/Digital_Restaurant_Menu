@@ -1,97 +1,129 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 import { X } from "lucide-react";
 import type { Item } from "@/data/menu";
 import { ITEM_IMAGES } from "@/data/itemImages";
 import { hasCJK } from "@/lib/i18n";
+import { ALLERGEN_META, detectAllergens } from "@/lib/allergens";
 import { PriceTag } from "./PriceTag";
 
 export function ItemModal({
   item,
+  isDrink = false,
   onClose,
 }: {
   item: Item | null;
+  isDrink?: boolean;
   onClose: () => void;
 }) {
+  // ESC closes
+  useEffect(() => {
+    if (!item) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [item, onClose]);
+
+  if (!item) return null;
+
+  const allergens = detectAllergens(item);
+
   return (
-    <AnimatePresence>
-      {item && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm"
+    <div
+      className="anim-fade-in fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        className="anim-scale-in relative grid w-full max-w-3xl grid-cols-1 max-h-[90vh] overflow-hidden rounded-3xl border border-border bg-card shadow-2xl portrait:grid-rows-[auto_1fr] landscape:md:grid-cols-2"
+      >
+        <button
           onClick={onClose}
+          className="absolute right-4 top-4 z-10 rounded-full bg-black/40 p-2 text-white backdrop-blur-md hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          aria-label="Close"
         >
-          <motion.div
-            initial={{ scale: 0.96, y: 8 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.96, y: 8 }}
-            transition={{ duration: 0.25 }}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            className="relative grid w-full max-w-3xl grid-cols-1 overflow-hidden rounded-3xl border border-border bg-card shadow-2xl md:grid-cols-2"
-          >
-            <button
-              onClick={onClose}
-              className="absolute right-4 top-4 z-10 rounded-full bg-black/40 p-2 text-white backdrop-blur-md hover:bg-black/60"
-              aria-label="Close"
-            >
-              <X className="h-5 w-5" />
-            </button>
+          <X className="h-5 w-5" />
+        </button>
 
-            <div className="aspect-[4/3] md:aspect-auto md:h-full bg-secondary">
-              {ITEM_IMAGES[item.id] && (
-                <img
-                  src={ITEM_IMAGES[item.id]}
-                  alt={item.nameEn}
-                  className="h-full w-full object-cover"
-                />
+        <div className="bg-secondary portrait:h-[40vh] landscape:md:h-full landscape:md:aspect-auto aspect-[4/3]">
+          {ITEM_IMAGES[item.id] && (
+            <img
+              src={ITEM_IMAGES[item.id]}
+              alt={item.nameEn}
+              className="h-full w-full object-cover"
+            />
+          )}
+        </div>
+
+        <div className="flex flex-col gap-4 p-8 overflow-y-auto">
+          <div>
+            <h2 className="en-text font-display text-3xl text-foreground">
+              {item.nameEn}
+            </h2>
+            {hasCJK(item.nameZh) && (
+              <p className="zh mt-1 text-base text-muted-foreground">
+                {item.nameZh}
+              </p>
+            )}
+          </div>
+
+          {(item.descEn || item.descZh) && (
+            <div className="space-y-2 text-sm leading-relaxed">
+              {isDrink && (
+                <span className="block text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                  <span className="en-text">Ingredients · </span>
+                  <span className="zh">配料</span>
+                </span>
+              )}
+              {item.descEn && (
+                <p className="en-text text-foreground/80">{item.descEn}</p>
+              )}
+              {hasCJK(item.descZh) && (
+                <p className="zh text-muted-foreground">{item.descZh}</p>
               )}
             </div>
+          )}
 
-            <div className="flex flex-col gap-4 p-8">
-              <div>
-                <h2 className="font-display text-3xl text-foreground">
-                  {item.nameEn}
-                </h2>
-                {hasCJK(item.nameZh) && (
-                  <p className="zh mt-1 text-base text-muted-foreground">
-                    {item.nameZh}
-                  </p>
-                )}
+          {allergens.length > 0 && (
+            <div className="space-y-1.5">
+              <span className="block text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                <span className="en-text">Allergens · </span>
+                <span className="zh">过敏原</span>
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {allergens.map((id) => (
+                  <span
+                    key={id}
+                    className="inline-flex items-center gap-1 rounded-full border border-border/50 px-2.5 py-1 text-xs"
+                  >
+                    <span aria-hidden>{ALLERGEN_META[id].emoji}</span>
+                    <span className="en-text text-foreground/80">{ALLERGEN_META[id].en}</span>
+                    <span className="zh text-muted-foreground">{ALLERGEN_META[id].zh}</span>
+                  </span>
+                ))}
               </div>
+            </div>
+          )}
 
-              {(item.descEn || item.descZh) && (
-                <div className="space-y-2 text-sm leading-relaxed">
-                  {item.descEn && (
-                    <p className="text-foreground/80">{item.descEn}</p>
-                  )}
-                  {hasCJK(item.descZh) && (
-                    <p className="zh text-muted-foreground">{item.descZh}</p>
-                  )}
-                </div>
-              )}
-
-              <div className="mt-auto border-t border-border/60 pt-4">
-                {item.priceAlt ? (
-                  <div className="flex gap-6">
-                    {item.priceAlt.map((p) => (
-                      <div key={p.label} className="flex flex-col">
-                        <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                          {p.label}
-                        </span>
-                        <PriceTag value={p.value} />
-                      </div>
-                    ))}
+          <div className="mt-auto border-t border-border/60 pt-4">
+            {item.priceAlt ? (
+              <div className="flex flex-wrap gap-6">
+                {item.priceAlt.map((p) => (
+                  <div key={p.label} className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                      {p.label}
+                    </span>
+                    <PriceTag value={p.value} />
                   </div>
-                ) : (
-                  <PriceTag value={item.price} />
-                )}
+                ))}
               </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            ) : (
+              <PriceTag value={item.price} />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
