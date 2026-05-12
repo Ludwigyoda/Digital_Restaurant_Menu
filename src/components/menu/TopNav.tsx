@@ -49,14 +49,20 @@ export function TopNav({ activeCat, activeSub, onSelect }: Props) {
             <li key={cat.id} className="relative shrink-0">
               <button
                 onClick={() => setOpenCat(isOpen ? null : cat.id)}
-                className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium uppercase tracking-wider transition-colors min-h-[44px] ${
+                className={`flex items-center gap-3 rounded-2xl px-4 py-2 transition-colors min-h-[44px] ${
                   isActive
                     ? "bg-foreground text-background"
                     : "text-foreground/80 hover:bg-secondary"
                 }`}
               >
-                <span>{cat.nameEn}</span>
-                <span className="zh text-xs opacity-70">{cat.nameZh}</span>
+                <span className="flex flex-col items-start leading-tight text-left">
+                  <span className="font-display text-base sm:text-lg tracking-wide">
+                    {cat.displayEn ?? cat.nameEn}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-[0.25em] opacity-80">
+                    {(cat.subEn ?? cat.nameEn)} · <span className="zh">{cat.nameZh}</span>
+                  </span>
+                </span>
                 <ChevronDown
                   className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
                 />

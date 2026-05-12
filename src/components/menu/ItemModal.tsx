@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import type { Item } from "@/data/menu";
 import { ITEM_IMAGES } from "@/data/itemImages";
+import { hasCJK } from "@/lib/i18n";
 import { PriceTag } from "./PriceTag";
 
 export function ItemModal({
@@ -53,9 +54,11 @@ export function ItemModal({
                 <h2 className="font-display text-3xl text-foreground">
                   {item.nameEn}
                 </h2>
-                <p className="zh mt-1 text-base text-muted-foreground">
-                  {item.nameZh}
-                </p>
+                {hasCJK(item.nameZh) && (
+                  <p className="zh mt-1 text-base text-muted-foreground">
+                    {item.nameZh}
+                  </p>
+                )}
               </div>
 
               {(item.descEn || item.descZh) && (
@@ -63,7 +66,7 @@ export function ItemModal({
                   {item.descEn && (
                     <p className="text-foreground/80">{item.descEn}</p>
                   )}
-                  {item.descZh && (
+                  {hasCJK(item.descZh) && (
                     <p className="zh text-muted-foreground">{item.descZh}</p>
                   )}
                 </div>

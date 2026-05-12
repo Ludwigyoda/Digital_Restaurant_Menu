@@ -7,16 +7,24 @@ import { TopNav } from "@/components/menu/TopNav";
 import { SubTabs } from "@/components/menu/SubTabs";
 import { ItemCard } from "@/components/menu/ItemCard";
 import { ItemModal } from "@/components/menu/ItemModal";
+import { UpdateButton } from "@/components/menu/UpdateButton";
 
 export const Route = createFileRoute("/")({
   component: MenuPage,
 });
 
-// Flat sequence of (catId, subId) pairs to enable horizontal swipe across all categories
-type Step = { catId: string; subId: string };
-const STEPS: Step[] = MENU.flatMap((c) => c.subs.map((s) => ({ catId: c.id, subId: s.id })));
+// Flat sequence of (catId, subId, groupId?) so swipe/arrows traverse every group
+// (e.g. Finger Food > Appetizers → Ceviches → Bar Snacks → Platos > Quesadillas → …)
+// instead of jumping straight from sub-cat to sub-cat.
+type Step = { catId: string; subId: string; groupId?: string };
+const STEPS: Step[] = MENU.flatMap((c) =>
+  c.subs.flatMap((s) =>
+    s.groups
+      ? s.groups.map((g) => ({ catId: c.id, subId: s.id, groupId: g.id }))
+      : [{ catId: c.id, subId: s.id }],
+  ),
+);
 
-const ITEMS_PER_PAGE = 7; // 1 featured (2x2) + 6 small in 4x2 grid
 const chunk = <T,>(arr: T[], size: number): T[][] => {
   if (arr.length === 0) return [[]];
   const out: T[][] = [];
@@ -24,15 +32,23 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
   return out;
 };
 
+// Adaptive grid: small sections fill the canvas elegantly instead of leaving empty cells.
+function getGridLayout(count: number) {
+  if (count <= 1) return { gridClass: "grid-cols-1 grid-rows-1", heroSpan: "" };
+  if (count === 2) return { gridClass: "grid-cols-2 grid-rows-1", heroSpan: "" };
+  if (count === 3) return { gridClass: "grid-cols-2 grid-rows-2", heroSpan: "row-span-2" };
+  if (count === 4) return { gridClass: "grid-cols-2 grid-rows-2", heroSpan: "" };
+  return { gridClass: "grid-cols-4 grid-rows-2", heroSpan: "col-span-2 row-span-2" };
+}
+
 function MenuPage() {
   const [stepIdx, setStepIdx] = useState(0);
-  const [activeGroup, setActiveGroup] = useState<string>("all-star");
   const [pageIdx, setPageIdx] = useState(0);
   const [openItem, setOpenItem] = useState<Item | null>(null);
   const [direction, setDirection] = useState(0);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { catId: activeCat, subId: activeSub } = STEPS[stepIdx];
+  const { catId: activeCat, subId: activeSub, groupId: activeGroup } = STEPS[stepIdx];
 
   const category = useMemo(
     () => MENU.find((c) => c.id === activeCat) ?? MENU[0],
@@ -49,8 +65,10 @@ function MenuPage() {
   }, [sub, activeGroup]);
 
   const allItems = group?.items ?? sub.items ?? [];
-  const pages = useMemo(() => chunk(allItems, ITEMS_PER_PAGE), [allItems]);
+  const itemsPerPage = allItems.length <= 6 ? Math.max(allItems.length, 1) : 7;
+  const pages = useMemo(() => chunk(allItems, itemsPerPage), [allItems, itemsPerPage]);
   const items = pages[Math.min(pageIdx, pages.length - 1)] ?? [];
+  const layout = getGridLayout(items.length);
 
   const goToStep = (idx: number, dir: number) => {
     const next = Math.max(0, Math.min(STEPS.length - 1, idx));
@@ -58,10 +76,6 @@ function MenuPage() {
     setDirection(dir);
     setStepIdx(next);
     setPageIdx(0);
-    const newSub = MENU.find((c) => c.id === STEPS[next].catId)?.subs.find(
-      (s) => s.id === STEPS[next].subId,
-    );
-    if (newSub?.groups?.[0]) setActiveGroup(newSub.groups[0].id);
   };
 
   const next = () => {
@@ -87,7 +101,6 @@ function MenuPage() {
       if (idleTimer.current) clearTimeout(idleTimer.current);
       idleTimer.current = setTimeout(() => {
         setStepIdx(0);
-        setActiveGroup("all-star");
         setPageIdx(0);
         setOpenItem(null);
       }, 90_000);
@@ -120,8 +133,10 @@ function MenuPage() {
     if (idx >= 0) goToStep(idx, idx > stepIdx ? 1 : -1);
   };
   const handleGroupSelect = (gid: string) => {
-    setActiveGroup(gid);
-    setPageIdx(0);
+    const idx = STEPS.findIndex(
+      (s) => s.catId === activeCat && s.subId === activeSub && s.groupId === gid,
+    );
+    if (idx >= 0) goToStep(idx, idx > stepIdx ? 1 : -1);
   };
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
@@ -148,7 +163,7 @@ function MenuPage() {
         {sub.groups && (
           <aside className="hidden md:flex w-44 shrink-0 flex-col gap-1 border-r border-border/50 px-3 py-6">
             <div className="mb-3 px-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-              Cocktails
+              {sub.nameEn}
             </div>
             {sub.groups.map((g) => {
               const active = g.id === activeGroup;
@@ -205,14 +220,14 @@ function MenuPage() {
               onDragEnd={onDragEnd}
               className="absolute inset-0 px-4 sm:px-8 py-6 pb-10 cursor-grab active:cursor-grabbing"
             >
-              <div className="grid h-full w-full grid-cols-4 grid-rows-2 gap-3 sm:gap-4">
+              <div className={`grid h-full w-full gap-3 sm:gap-4 ${layout.gridClass}`}>
                 {items.map((item, i) => (
                   <ItemCard
                     key={item.id}
                     item={item}
                     index={i}
                     onOpen={setOpenItem}
-                    featured={i === 0 && items.length > 2}
+                    spanClass={i === 0 ? layout.heroSpan : ""}
                   />
                 ))}
               </div>
@@ -235,8 +250,9 @@ function MenuPage() {
         </div>
       </section>
 
-      <footer className="flex items-center justify-between border-t border-border/60 px-4 sm:px-8 py-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
+      <footer className="flex items-center justify-between gap-4 border-t border-border/60 px-4 sm:px-8 py-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
         <span>La Lupita Taqueria</span>
+        <UpdateButton />
         <span>Revolucion Cocktail Bar</span>
       </footer>
 

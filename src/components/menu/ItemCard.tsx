@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import type { Item } from "@/data/menu";
 import { PriceTag } from "./PriceTag";
 import { ITEM_IMAGES } from "@/data/itemImages";
+import { hasCJK } from "@/lib/i18n";
 
 const accentMap: Record<NonNullable<Item["accent"]>, string> = {
   terracotta: "var(--terracotta)",
@@ -15,15 +16,16 @@ export function ItemCard({
   item,
   index,
   onOpen,
-  featured = false,
+  spanClass = "",
 }: {
   item: Item;
   index: number;
   onOpen?: (item: Item) => void;
-  featured?: boolean;
+  spanClass?: string;
 }) {
   const accent = item.accent ? accentMap[item.accent] : "var(--terracotta)";
   const image = ITEM_IMAGES[item.id];
+  const showZh = hasCJK(item.nameZh);
 
   return (
     <motion.button
@@ -32,9 +34,7 @@ export function ItemCard({
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: Math.min(index * 0.03, 0.3) }}
-      className={`group relative block h-full w-full overflow-hidden rounded-2xl border border-border/50 bg-card text-left transition-all duration-300 hover:border-border focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${
-        featured ? "col-span-2 row-span-2" : ""
-      }`}
+      className={`group relative block h-full w-full overflow-hidden rounded-2xl border border-border/50 bg-card text-left transition-all duration-300 hover:border-border focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${spanClass}`}
     >
       <div className="relative h-full w-full overflow-hidden bg-secondary">
         {image ? (
@@ -55,18 +55,34 @@ export function ItemCard({
               <h3 className="font-display text-lg leading-tight text-white truncate">
                 {item.nameEn}
               </h3>
-              <p className="zh mt-0.5 text-xs text-white/70 truncate">
-                {item.nameZh}
-              </p>
+              {showZh && (
+                <p className="zh mt-0.5 text-xs text-white/70 truncate">
+                  {item.nameZh}
+                </p>
+              )}
               {item.descEn && (
-                <p className="mt-1 line-clamp-1 text-[11px] text-white/60">
+                <p className="mt-1 line-clamp-2 text-[11px] text-white/60">
                   {item.descEn}
                 </p>
               )}
             </div>
             <div className="shrink-0 text-white">
               {item.priceAlt ? (
-                <PriceTag value={item.priceAlt[0].value} />
+                item.priceAlt.length === 2 ? (
+                  <div className="flex flex-col items-end leading-tight">
+                    <PriceTag value={item.priceAlt[0].value} />
+                    <span className="text-[9px] uppercase tracking-wider text-white/70">
+                      {item.priceAlt[0].label} · ¥{item.priceAlt[1].value} {item.priceAlt[1].label}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-end leading-tight">
+                    <PriceTag value={`${item.priceAlt[0].value}+`} />
+                    <span className="text-[9px] uppercase tracking-wider text-white/70">
+                      {item.priceAlt.length} options
+                    </span>
+                  </div>
+                )
               ) : (
                 <PriceTag value={item.price} />
               )}
