@@ -204,7 +204,7 @@ export const MENU: Category[] = [
     id: "drinks",
     nameEn: "Drinks",
     nameZh: "酒水",
-    displayEn: "Revolución",
+    displayEn: "Revolucion",
     subEn: "Drinks",
     subs: [
       {
@@ -230,14 +230,14 @@ export const MENU: Category[] = [
             nameEn: "Signature",
             nameZh: "招牌鸡尾酒",
             items: [
+              { id: "sg-mr-dameisha", nameEn: "Mr Dameisha", nameZh: "MR DAMEISHA", descEn: "Italicus liquor, raspberry puree, sparkling wine", descZh: "佛手柑利口酒、树莓果茸、气泡酒", price: 80, accent: "fuchsia-mx" },
+              { id: "sg-mrs-xiaomeisha", nameEn: "Mrs Xiaomeisha", nameZh: "MRS XIAOMEISHA", descEn: "Strawberry Gin, Campari infused with coffee bean, martini rosso, white cacao liquor, chocolate bitter", descZh: "草莓金酒、金巴利浸泡咖啡豆、马天尼红威末酒、白可可力娇酒、巧克力苦精酒", price: 80, accent: "fuchsia-mx" },
               { id: "sg-mrs-red", nameEn: "Mrs Red", nameZh: "MRS RED", descEn: "Olmeca, homemade turmeric syrup, cacao white liquor, lemon juice, fresh turmeric", descZh: "奥美加龙舌兰、自制姜黄根糖浆、白可可力娇酒、柠檬汁、新鲜姜黄根", price: 80, accent: "terracotta" },
               { id: "sg-mr-white", nameEn: "Mr White", nameZh: "MR WHITE", descEn: "Vodka, lemon juice, raspberry puree, cranberry juice, Cointreau", descZh: "伏特加、柠檬汁、树莓果茸、蔓越莓汁、君度", price: 80, accent: "talavera" },
               { id: "sg-mr-black", nameEn: "Mr Black", nameZh: "MR BLACK", descEn: "Havana 3 yrs rum, espresso coffee, pandan syrup, coconut puree", descZh: "哈瓦那3年朗姆、浓缩咖啡、斑兰糖浆、椰子果茸", price: 80, accent: "terracotta" },
               { id: "sg-mr-yellow", nameEn: "Mr Yellow", nameZh: "MR YELLOW", descEn: "Havana rum 3 yrs, fresh pineapple, caramel syrup, coconut puree, pineapple juice", descZh: "哈瓦那3年朗姆酒、新鲜菠萝、焦糖糖浆、椰子果茸、菠萝汁", price: 80, accent: "saffron" },
               { id: "sg-mr-green", nameEn: "Mr Green", nameZh: "MR GREEN", descEn: "Beefeater, cardamon seed, pear puree, pandan syrup, kaffir leaves", descZh: "必富达金酒、豆蔻种子、梨子果茸、斑兰糖浆、泰国青柠叶", price: 80, accent: "cactus" },
-              { id: "sg-mr-dameisha", nameEn: "Mr Dameisha", nameZh: "MR DAMEISHA", descEn: "Italicus liquor, raspberry puree, sparkling wine", descZh: "佛手柑利口酒、树莓果茸、气泡酒", price: 80, accent: "fuchsia-mx" },
               { id: "sg-mr-orange", nameEn: "Mr Orange", nameZh: "MR ORANGE", descEn: "Jameson, fresh turmeric, fresh orange, fresh lemon, fresh lime, ginger ale", descZh: "尊美醇威士忌、新鲜姜黄根、新鲜橙子、新鲜柠檬、新鲜青柠、干姜水", price: 80, accent: "saffron" },
-              { id: "sg-mrs-xiaomeisha", nameEn: "Mrs Xiaomeisha", nameZh: "MRS XIAOMEISHA", descEn: "Strawberry Gin, Campari infused with coffee bean, martini rosso, white cacao liquor, chocolate bitter", descZh: "草莓金酒、金巴利浸泡咖啡豆、马天尼红威末酒、白可可力娇酒、巧克力苦精酒", price: 80, accent: "fuchsia-mx" },
             ],
           },
           {
@@ -246,7 +246,7 @@ export const MENU: Category[] = [
             nameZh: "明星鸡尾酒",
             items: [
               { id: "as-bkk", nameEn: "BKK Tonic", nameZh: "BKK TONIC", descEn: "Beefeater, passion fruit, kaffir leave, coconut syrup, tonic water", descZh: "必富达金酒、椰子&百香果、泰国青柠&汤力水", price: 80, accent: "cactus" },
-              { id: "as-revo", nameEn: "Revolución Cocktail", nameZh: "REVOLUCIÓN COCKTAIL", descEn: "Havana 3 yrs, fresh rosemary, passion fruit puree, apple juice, sugar syrup", descZh: "哈瓦那3年朗姆、糖、迷迭香、百香果、苹果", price: 80, accent: "terracotta" },
+              { id: "as-revo", nameEn: "Revolucion Cocktail", nameZh: "REVOLUCION COCKTAIL", descEn: "Havana 3 yrs, fresh rosemary, passion fruit puree, apple juice, sugar syrup", descZh: "哈瓦那3年朗姆、糖、迷迭香、百香果、苹果", price: 80, accent: "terracotta" },
               { id: "as-cuban", nameEn: "Cuban Gentleman", nameZh: "CUBAN GENTLEMAN", descEn: "Havana 7 yrs, vanilla syrup, angostura bitter, fresh orange", descZh: "哈瓦那7年朗姆酒、香草、安格斯苦味酒、橙皮浸泡", price: 90, accent: "saffron" },
               { id: "as-bull-kiss", nameEn: "Bull Kiss", nameZh: "BULL KISS", descEn: "Absolut, vanilla syrup, raspberry puree, cranberry juice, top up with Red Bull foam", descZh: "绝对香草伏特加、树莓、蔓越莓、柠檬&香草红牛泡沫", price: 80, accent: "fuchsia-mx" },
               { id: "as-asian-colada", nameEn: "Asian Colada", nameZh: "ASIAN COLADA", descEn: "Havana 3 yrs, passion fruit puree, coconut puree, kaffir lime leaves, coconut syrup", descZh: "哈瓦那3年、百香果果茸、椰子果茸、泰国青柠叶、椰子糖浆", price: 80, accent: "saffron" },
@@ -302,7 +302,6 @@ export const MENU: Category[] = [
               { id: "lc-cantarito", nameEn: "Cantarito", nameZh: "坎塔里托", price: 80, accent: "terracotta" },
               { id: "lc-batanga", nameEn: "Batanga", nameZh: "巴坦加", price: 80, accent: "terracotta" },
               { id: "lc-margarita-lupita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "cactus" },
-              { id: "lc-jamaica", nameEn: "Jamaica Water", nameZh: "洛神花水", price: 40, accent: "fuchsia-mx" },
               { id: "lc-water", nameEn: "Water", nameZh: "矿泉水", price: 10, accent: "talavera" },
             ],
           },
@@ -356,22 +355,22 @@ export const MENU: Category[] = [
           },
           {
             id: "draft",
-            nameEn: "Draft Beer",
+            nameEn: "Draft Beers",
             nameZh: "生啤",
             items: [
               { id: "be-carlsberg", nameEn: "Carlsberg (Draft)", nameZh: "嘉士伯生啤", price: 55 },
+              { id: "be-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60 },
             ],
           },
           {
             id: "imported",
-            nameEn: "Imported Belgium Beer",
+            nameEn: "Imported Belgian Beer",
             nameZh: "进口比利时啤酒",
             items: [
               { id: "be-blanche-bruges", nameEn: "Blanche de Bruges", nameZh: "布鲁日白啤", descEn: "33cl", price: 40 },
               { id: "be-rose-bruges", nameEn: "Rosé de Bruges", nameZh: "布鲁日玫瑰", descEn: "33cl", price: 45 },
               { id: "be-vedett-elderflower", nameEn: "Vedett Extra Elderflower", nameZh: "白熊接骨木花", descEn: "33cl", price: 45 },
               { id: "be-hoegaarden", nameEn: "Hoegaarden White", nameZh: "福佳白啤酒", price: 50, priceAlt: [{ label: "×1", value: 50 }, { label: "×12", value: 500 }] },
-              { id: "be-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60 },
               { id: "be-duvel-citra", nameEn: "Duvel Tripel Hop Citra", nameZh: "督威三倍啤酒", descEn: "33cl", price: 60 },
             ],
           },
@@ -405,7 +404,15 @@ export const MENU: Category[] = [
               { id: "sd-ginger-ale", nameEn: "Ginger Ale", nameZh: "姜汁汽水", price: 30 },
               { id: "sd-soda", nameEn: "Soda Water", nameZh: "苏打水", price: 30 },
               { id: "sd-tonic", nameEn: "Tonic Water", nameZh: "汤力水", price: 30 },
-              { id: "sd-lemonade-tea", nameEn: "Ice Lemonade Tea", nameZh: "冰柠檬茶", price: 30 },
+            ],
+          },
+          {
+            id: "lupita-iced-tea",
+            nameEn: "Lupita Iced Tea Drinks",
+            nameZh: "露佩塔冰茶饮品",
+            items: [
+              { id: "li-lemonade-tea", nameEn: "Ice Lemonade Tea", nameZh: "冰柠檬茶", price: 30 },
+              { id: "li-jamaica", nameEn: "Jamaica Water", nameZh: "洛神花水", price: 40 },
             ],
           },
           {

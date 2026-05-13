@@ -98,7 +98,7 @@ type Category = { id, nameEn, nameZh, displayEn?, subEn?, subs: SubCategory[] };
    ```ts
    {
      appId: "com.lalupita.revolucion",
-     appName: "La Lupita × Revolución",
+     appName: "La Lupita × Revolucion",
      webDir: "dist",
    }
    ```

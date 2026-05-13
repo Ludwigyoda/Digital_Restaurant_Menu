@@ -29,7 +29,7 @@ const VIP_ITEMS: VipItem[] = [
   },
   {
     id: "vip-royale",
-    nameEn: "Revolución Royale",
+    nameEn: "Revolucion Royale",
     nameZh: "皇家革命",
     descEn: "Havana Club 15 yr, vintage Prosecco, edible gold leaf, citrus zest",
     descZh: "哈瓦那15年朗姆、年份普罗赛克、金箔、柑橘皮",

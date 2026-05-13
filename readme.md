@@ -1,10 +1,10 @@
-# La Lupita × Revolución — Menu Tablette
+# La Lupita × Revolucion — Menu Tablette
 
 Système d'affichage de menu pour tablettes en restaurant. **Bilingue anglais / chinois**, **100% hors-ligne**, mode kiosque Android. Conçu spécifiquement pour le marché chinois (Shenzhen).
 
 121 plats et boissons des deux enseignes du gérant :
 - **La Lupita** — cuisine mexicaine (Finger Food, Platos, Tacos, Desserts)
-- **Revolución** — cocktail bar (Signature, All Star, Classic, Mocktail, Shots, Wines, Beers, Soft Drinks, Shisha)
+- **Revolucion** — cocktail bar (Signature, All Star, Classic, Mocktail, Shots, Wines, Beers, Soft Drinks, Shisha)
 
 ---
 
@@ -25,7 +25,7 @@ Système d'affichage de menu pour tablettes en restaurant. **Bilingue anglais / 
 
 Une **section premium cachée** débloquée par une séquence de taps sur les logos :
 
-> Tape **2× le logo La Lupita** + **2× le logo Revolución** + **1× le badge halal**
+> Tape **2× le logo La Lupita** + **2× le logo Revolucion** + **1× le badge halal**
 
 Ouvre un menu exclusif "Members Only" avec 3 cocktails ultra-premium réservés aux clients qui connaissent le code (à diffuser par bouche-à-oreille, carte de fidélité, ou lors d'événements VIP).
 
@@ -108,4 +108,4 @@ Documentation technique pour la maintenance : [docs/dev.md](docs/dev.md).
 
 ---
 
-*La Lupita × Revolución · Taqueria & Cocktail Bar · 塔可餐厅 & 鸡尾酒吧*
+*La Lupita × Revolucion · Taqueria & Cocktail Bar · 塔可餐厅 & 鸡尾酒吧*

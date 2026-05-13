@@ -157,4 +157,4 @@ Pour un menu de restaurant, c'est **largement au-dessus** des besoins en sécuri
 
 ---
 
-*Document préparé pour le projet menu tablettes La Lupita × Revolución.*
+*Document préparé pour le projet menu tablettes La Lupita × Revolucion.*

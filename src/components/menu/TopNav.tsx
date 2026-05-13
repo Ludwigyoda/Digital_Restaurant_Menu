@@ -47,7 +47,7 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
           <button
             type="button"
             onClick={() => onLogoTap?.("revo")}
-            aria-label="Revolución"
+            aria-label="Revolucion"
             className="rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <img
@@ -133,10 +133,10 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
       <button
         type="button"
         onClick={() => onSubtitleTap?.()}
-        aria-label="La Lupita × Revolución"
+        aria-label="La Lupita × Revolucion"
         className="w-full border-t border-border/30 px-4 sm:px-8 py-1 text-center text-[9px] uppercase tracking-[0.4em] text-muted-foreground/60 focus:outline-none"
       >
-        <span className="en-text">La Lupita × Revolución · Taqueria & Cocktail Bar · </span>
+        <span className="en-text">La Lupita × Revolucion · Taqueria & Cocktail Bar · </span>
         <span className="zh">塔可餐厅 & 鸡尾酒吧</span>
       </button>
     </nav>

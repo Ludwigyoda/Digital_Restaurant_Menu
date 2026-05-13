@@ -83,7 +83,7 @@ Crée aussi un `index.html` à la racine :
 ```html
 <!doctype html>
 <html lang="en">
-  <head><meta charset="UTF-8" /><title>La Lupita × Revolución</title></head>
+  <head><meta charset="UTF-8" /><title>La Lupita × Revolucion</title></head>
   <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
 </html>
 ```
