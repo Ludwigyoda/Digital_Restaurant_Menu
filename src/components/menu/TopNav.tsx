@@ -28,6 +28,11 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
 
   return (
     <nav ref={ref} className="border-b border-border/60">
+      <div className="w-full border-b border-border/30 bg-foreground/[0.02] px-4 sm:px-8 py-1.5 text-center">
+        <span className="font-display text-[11px] uppercase tracking-[0.5em] text-muted-foreground/80">
+          Since 2012
+        </span>
+      </div>
       <div className="flex items-center gap-4 px-4 sm:px-8 py-4">
         <div className="shrink-0 flex items-center gap-4">
           <button
