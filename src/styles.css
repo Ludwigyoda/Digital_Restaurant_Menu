@@ -99,12 +99,6 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { scrollbar-width: none; }
   .text-balance { text-wrap: balance; }
-
-  .talavera-bg {
-    background-image:
-      radial-gradient(circle at 1px 1px, oklch(1 0 0 / 0.08) 1px, transparent 0);
-    background-size: 24px 24px;
-  }
 }
 
 /* Language toggling — driven by classes set on <html> via LangSwitcher */

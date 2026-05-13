@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useMemo, useState } from "react";
 import { MENU, type Item } from "@/data/menu";
 import { TopNav } from "@/components/menu/TopNav";
@@ -13,9 +12,6 @@ import { useSwipe } from "@/lib/useSwipe";
 import { useIdleReset } from "@/lib/useIdleReset";
 import { chunk, getGridLayout } from "@/lib/gridLayout";
 
-export const Route = createFileRoute("/")({
-  component: MenuPage,
-});
 
 // Flat sequence of (catId, subId, groupId?) so swipe traverses every group.
 type Step = { catId: string; subId: string; groupId?: string };
@@ -30,7 +26,7 @@ const STEPS: Step[] = MENU.flatMap((c) =>
 // Secret sequence: 2× La Lupita logo + 2× Revolución logo + 1× halal badge → VIP menu.
 const VIP_SEQUENCE = ["lalupita", "lalupita", "revo", "revo", "halal"] as const;
 
-function MenuPage() {
+export function MenuPage() {
   const [stepIdx, setStepIdx] = useState(0);
   const [pageIdx, setPageIdx] = useState(0);
   const [openItem, setOpenItem] = useState<Item | null>(null);
@@ -110,7 +106,7 @@ function MenuPage() {
   };
 
   return (
-    <main className="flex h-screen flex-col bg-background talavera-bg overflow-hidden">
+    <main className="flex h-screen flex-col bg-background overflow-hidden">
       <TopNav
         activeCat={activeCat}
         activeSub={activeSub}

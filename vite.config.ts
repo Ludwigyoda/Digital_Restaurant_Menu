@@ -1,22 +1,28 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
+// Static SPA build deployed to Tencent EdgeOne Pages and loaded by Fully
+// Kiosk Browser on restaurant tablets. The PWA layer (manifest + service
+// worker + precache) is always on so kiosks keep working when the network
+// is flaky and silently swap in the next build on idle.
 export default defineConfig({
-  tanstackStart: {
-    target: "static",
-  },
   plugins: [
+    react(),
+    tailwindcss(),
+    tsconfigPaths(),
     VitePWA({
-      // Inject the SW registration helper. We register manually from
-      // src/lib/pwa.ts so we can run the silent-update logic when idle.
       injectRegister: false,
-      registerType: "autoUpdate",
-      strategies: "generateSW",
-      includeAssets: [
-        "apple-touch-icon.png",
-        "icon-192.png",
-        "icon-512.png",
-      ],
+      // "prompt" so the new SW stays in waiting until we explicitly send
+      // SKIP_WAITING on idle. The old build keeps serving customers until
+      // the swap is safe to apply.
+      registerType: "prompt",
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.ts",
+      includeAssets: ["apple-touch-icon.png", "icon-192.png", "icon-512.png"],
       manifest: {
         name: "La Lupita × Revolucion",
         short_name: "La Lupita",
@@ -38,58 +44,22 @@ export default defineConfig({
           { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
         ],
       },
-      workbox: {
-        // Precache everything emitted by Vite (HTML, JS, CSS, fonts, images).
-        // The new SW only activates once every entry is fetched, so the old
-        // bundle keeps serving until the new build is fully ready.
+      injectManifest: {
+        // Precache every emitted asset so the kiosk works offline from the
+        // first launch. The new SW only activates once every entry is
+        // fetched, so the old bundle keeps serving until the new one is
+        // fully ready.
         globPatterns: ["**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp,avif,woff,woff2,webmanifest}"],
         maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
-        cleanupOutdatedCaches: true,
-        clientsClaim: false,
-        skipWaiting: false,
-        // Any in-app navigation that misses the network falls back to the
-        // precached app shell so the kiosk never lands on a broken page.
-        navigateFallback: "/index.html",
-        navigateFallbackDenylist: [/^\/api\//],
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) => url.origin === "https://fonts.googleapis.com",
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "google-fonts-stylesheets",
-            },
-          },
-          {
-            urlPattern: ({ url }) => url.origin === "https://fonts.gstatic.com",
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-webfonts",
-              expiration: {
-                maxEntries: 30,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-              },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            urlPattern: ({ request, sameOrigin }) =>
-              sameOrigin && request.destination === "image",
-            handler: "CacheFirst",
-            options: {
-              cacheName: "menu-images",
-              expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 60 * 60 * 24 * 60,
-              },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
       },
-      devOptions: {
-        enabled: false,
-        type: "module",
-      },
+      devOptions: { enabled: false, type: "module" },
     }),
   ],
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+    rollupOptions: {
+      input: "./index.html",
+    },
+  },
 });

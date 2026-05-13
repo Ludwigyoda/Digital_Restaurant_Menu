@@ -1,25 +1,19 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "lalupita-revolucion-menu",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "vite --config vite.config.apk.ts",
-    "build": "vite build --config vite.config.apk.ts",
-    "build:dev": "vite build --config vite.config.apk.ts --mode development",
-    "build:static": "vite build --config vite.config.apk.ts",
-    "preview": "vite preview --config vite.config.apk.ts",
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
     "optimize:images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
-    "@cloudflare/vite-plugin": "^1.25.5",
     "@tailwindcss/vite": "^4.2.1",
-    "@tanstack/react-query": "^5.83.0",
-    "@tanstack/react-router": "^1.168.25",
-    "@tanstack/react-start": "^1.167.50",
-    "@tanstack/router-plugin": "^1.167.28",
     "clsx": "^2.1.1",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
@@ -30,7 +24,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@lovable.dev/vite-tanstack-config": "^1.5.1",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

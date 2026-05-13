@@ -208,6 +208,18 @@ export const MENU: Category[] = [
     subEn: "Drinks",
     subs: [
       {
+        id: "happy-hours",
+        nameEn: "Happy Hours",
+        nameZh: "欢乐时光",
+        defaultAccent: "saffron",
+        items: [
+          { id: "hh-corona", nameEn: "Corona", nameZh: "科罗娜", price: 40, accent: "saffron" },
+          { id: "hh-carlsberg", nameEn: "Carlsberg", nameZh: "嘉士伯", price: 55, accent: "saffron" },
+          { id: "hh-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60, accent: "saffron" },
+          { id: "hh-margarita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "fuchsia-mx" },
+        ],
+      },
+      {
         id: "cocktails",
         nameEn: "Cocktails",
         nameZh: "鸡尾酒",
@@ -290,6 +302,8 @@ export const MENU: Category[] = [
               { id: "lc-cantarito", nameEn: "Cantarito", nameZh: "坎塔里托", price: 80, accent: "terracotta" },
               { id: "lc-batanga", nameEn: "Batanga", nameZh: "巴坦加", price: 80, accent: "terracotta" },
               { id: "lc-margarita-lupita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "cactus" },
+              { id: "lc-jamaica", nameEn: "Jamaica Water", nameZh: "洛神花水", price: 40, accent: "fuchsia-mx" },
+              { id: "lc-water", nameEn: "Water", nameZh: "矿泉水", price: 10, accent: "talavera" },
             ],
           },
         ],
@@ -330,32 +344,48 @@ export const MENU: Category[] = [
         nameEn: "Beers",
         nameZh: "啤酒",
         defaultAccent: "saffron",
-        items: [
-          { id: "be-corona", nameEn: "Corona", nameZh: "科罗娜", price: 40, priceAlt: [{ label: "×1", value: 40 }, { label: "×12", value: 420 }] },
-          { id: "be-hoegaarden", nameEn: "Hoegaarden White", nameZh: "福佳白啤酒", price: 50, priceAlt: [{ label: "×1", value: 50 }, { label: "×12", value: 500 }] },
-          { id: "be-chelada", nameEn: "Chelada", nameZh: "切拉达", price: 45 },
-          { id: "be-michelada", nameEn: "Michelada", nameZh: "米切拉达", price: 80 },
-          { id: "be-coronarita", nameEn: "Coronarita", nameZh: "科罗娜玛格丽特", price: 90 },
-          { id: "be-carlsberg", nameEn: "Carlsberg (Draft)", nameZh: "嘉士伯生啤", price: 55 },
-          { id: "be-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60 },
-          { id: "be-carlsberg-tower", nameEn: "Carlsberg Tower", nameZh: "嘉士伯酒塔", price: 248 },
-          { id: "be-ducato-tower", nameEn: "Ducato IPA Tower", nameZh: "杜卡托IPA酒塔", price: 298 },
-          { id: "be-blanche-bruges", nameEn: "Blanche de Bruges", nameZh: "布鲁日白啤", descEn: "33cl", price: 40 },
-          { id: "be-rose-bruges", nameEn: "Rosé de Bruges", nameZh: "布鲁日玫瑰", descEn: "33cl", price: 45 },
-          { id: "be-vedett-elderflower", nameEn: "Vedett Extra Elderflower", nameZh: "白熊接骨木花", descEn: "33cl", price: 45 },
-          { id: "be-duvel-citra", nameEn: "Duvel Tripel Hop Citra", nameZh: "督威三倍啤酒", descEn: "33cl", price: 60 },
-        ],
-      },
-      {
-        id: "happy-hours",
-        nameEn: "Happy Hours",
-        nameZh: "欢乐时光",
-        defaultAccent: "saffron",
-        items: [
-          { id: "hh-corona", nameEn: "Corona", nameZh: "科罗娜", price: 40, accent: "saffron" },
-          { id: "hh-carlsberg", nameEn: "Carlsberg", nameZh: "嘉士伯", price: 55, accent: "saffron" },
-          { id: "hh-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60, accent: "saffron" },
-          { id: "hh-margarita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "fuchsia-mx" },
+        groups: [
+          {
+            id: "towers",
+            nameEn: "Towers",
+            nameZh: "啤酒塔",
+            items: [
+              { id: "be-carlsberg-tower", nameEn: "Carlsberg Tower", nameZh: "嘉士伯酒塔", price: 248 },
+              { id: "be-ducato-tower", nameEn: "Ducato IPA Tower", nameZh: "杜卡托IPA酒塔", price: 298 },
+            ],
+          },
+          {
+            id: "draft",
+            nameEn: "Draft Beer",
+            nameZh: "生啤",
+            items: [
+              { id: "be-carlsberg", nameEn: "Carlsberg (Draft)", nameZh: "嘉士伯生啤", price: 55 },
+            ],
+          },
+          {
+            id: "imported",
+            nameEn: "Imported Beer",
+            nameZh: "进口啤酒",
+            items: [
+              { id: "be-blanche-bruges", nameEn: "Blanche de Bruges", nameZh: "布鲁日白啤", descEn: "33cl", price: 40 },
+              { id: "be-rose-bruges", nameEn: "Rosé de Bruges", nameZh: "布鲁日玫瑰", descEn: "33cl", price: 45 },
+              { id: "be-vedett-elderflower", nameEn: "Vedett Extra Elderflower", nameZh: "白熊接骨木花", descEn: "33cl", price: 45 },
+              { id: "be-hoegaarden", nameEn: "Hoegaarden White", nameZh: "福佳白啤酒", price: 50, priceAlt: [{ label: "×1", value: 50 }, { label: "×12", value: 500 }] },
+              { id: "be-ducato", nameEn: "Ducato", nameZh: "杜卡托", price: 60 },
+              { id: "be-duvel-citra", nameEn: "Duvel Tripel Hop Citra", nameZh: "督威三倍啤酒", descEn: "33cl", price: 60 },
+            ],
+          },
+          {
+            id: "latinos",
+            nameEn: "Latino Beers",
+            nameZh: "拉丁啤酒",
+            items: [
+              { id: "be-corona", nameEn: "Corona", nameZh: "科罗娜", price: 40, priceAlt: [{ label: "×1", value: 40 }, { label: "×12", value: 420 }] },
+              { id: "be-chelada", nameEn: "Chelada", nameZh: "切拉达", price: 45 },
+              { id: "be-michelada", nameEn: "Michelada", nameZh: "米切拉达", price: 80 },
+              { id: "be-coronarita", nameEn: "Coronarita", nameZh: "科罗娜玛格丽特", price: 90 },
+            ],
+          },
         ],
       },
       {
@@ -379,28 +409,12 @@ export const MENU: Category[] = [
             ],
           },
           {
-            id: "juices",
-            nameEn: "Juices",
-            nameZh: "果汁",
-            items: [
-              { id: "sd-jamaica", nameEn: "Jamaica Water", nameZh: "洛神花水", price: 40 },
-            ],
-          },
-          {
             id: "energy",
             nameEn: "Energy & Specials",
             nameZh: "特饮",
             items: [
               { id: "en-redbull", nameEn: "Red Bull", nameZh: "红牛", price: 40 },
               { id: "en-ginger-beer", nameEn: "Ginger Beer", nameZh: "姜味啤酒", price: 40 },
-            ],
-          },
-          {
-            id: "water",
-            nameEn: "Water",
-            nameZh: "水",
-            items: [
-              { id: "wt-water", nameEn: "Water", nameZh: "矿泉水", price: 10 },
             ],
           },
         ],
