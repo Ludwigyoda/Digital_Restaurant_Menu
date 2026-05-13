@@ -225,3 +225,17 @@ html.lang-zh :is(.en-text) { display: none; }
 :-webkit-full-screen h3.en-text {
   font-size: 1.15em;
 }
+
+/* L'UpdateButton (status indicator) vit dans la TopNav top-right. En
+ * fullscreen, scale pour rester lisible à 40 cm de distance kiosk. */
+:fullscreen [data-update-status],
+:-webkit-full-screen [data-update-status] {
+  font-size: 0.875rem;
+  letter-spacing: 0.15em;
+}
+
+:fullscreen [data-update-status] svg,
+:-webkit-full-screen [data-update-status] svg {
+  width: 1rem;
+  height: 1rem;
+}

@@ -49,6 +49,15 @@ export const MENU: Category[] = [
         defaultAccent: "saffron",
         groups: [
           {
+            id: "bar-snacks",
+            nameEn: "Bar Snacks",
+            nameZh: "酒吧小吃",
+            items: [
+              { id: "bs-peanuts", nameEn: "Peanuts", nameZh: "油炸花生米", descEn: "Crispy fried peanuts with salt", descZh: "香脆花生和盐", price: 28 },
+              { id: "bs-cucumber", nameEn: "Soy Wasabi Cucumber", nameZh: "芥末酱油黄瓜条", descEn: "Fresh cucumber strips with soy sauce and wasabi", descZh: "鲜切黄瓜条配酱油和芥末", price: 38 },
+            ],
+          },
+          {
             id: "appetizers",
             nameEn: "Appetizers",
             nameZh: "开胃菜",
@@ -69,15 +78,6 @@ export const MENU: Category[] = [
               { id: "cv-prawn", nameEn: "Tropical Prawn Ceviche", nameZh: "热带风味腌虾", descEn: "Shrimps in coconut lime dressing with pineapple, cucumber and chili", descZh: "椰香青柠汁腌虾、搭配菠萝和小米椒、黄瓜", price: 78 },
               { id: "cv-lupita", nameEn: "Lupita Cocktail Ceviche", nameZh: "拉鲁皮塔墨西哥酒腌海鲜", descEn: "Shrimps, fish, tomato juice, onion, coriander, jalapeño, spicy sauce", descZh: "鱼类及虾、番茄汁、洋葱、辣椒、辣酱", price: 88 },
               { id: "cv-fish", nameEn: "Tropical Fish Ceviche", nameZh: "热带风味腌鱼", descEn: "Fish cured in coconut lime with pineapple, cucumber and chili", descZh: "椰香青柠汁腌鱼、搭配菠萝和小米椒、黄瓜", price: 78 },
-            ],
-          },
-          {
-            id: "bar-snacks",
-            nameEn: "Bar Snacks",
-            nameZh: "酒吧小吃",
-            items: [
-              { id: "bs-peanuts", nameEn: "Peanuts", nameZh: "油炸花生米", descEn: "Crispy fried peanuts with salt", descZh: "香脆花生和盐", price: 28 },
-              { id: "bs-cucumber", nameEn: "Soy Wasabi Cucumber", nameZh: "芥末酱油黄瓜条", descEn: "Fresh cucumber strips with soy sauce and wasabi", descZh: "鲜切黄瓜条配酱油和芥末", price: 38 },
             ],
           },
         ],
@@ -204,7 +204,7 @@ export const MENU: Category[] = [
     id: "drinks",
     nameEn: "Drinks",
     nameZh: "酒水",
-    displayEn: "Revolucion Cocktails",
+    displayEn: "Revolucion Cocktail",
     subEn: "Drinks",
     subs: [
       {
