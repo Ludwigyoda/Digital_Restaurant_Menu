@@ -4,6 +4,7 @@ import { TopNav } from "@/components/menu/TopNav";
 import { SubTabs } from "@/components/menu/SubTabs";
 import { ItemCard } from "@/components/menu/ItemCard";
 import { ItemModal } from "@/components/menu/ItemModal";
+import { UpdateButton } from "@/components/menu/UpdateButton";
 import { VipModal } from "@/components/menu/VipModal";
 import { Breadcrumb } from "@/components/menu/Breadcrumb";
 import { useSecretSequence } from "@/lib/secretSequence";
@@ -204,6 +205,10 @@ export function MenuPage() {
           )}
         </div>
       </section>
+
+      <footer className="flex items-center justify-end border-t border-border/60 px-4 sm:px-8 py-3">
+        <UpdateButton />
+      </footer>
 
       <ItemModal
         item={openItem}

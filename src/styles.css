@@ -226,16 +226,10 @@ html.lang-zh :is(.en-text) { display: none; }
   font-size: 1.15em;
 }
 
-/* L'UpdateButton (status indicator) vit dans la TopNav top-right. En
- * fullscreen, scale pour rester lisible à 40 cm de distance kiosk. */
-:fullscreen [data-update-status],
-:-webkit-full-screen [data-update-status] {
-  font-size: 0.875rem;
-  letter-spacing: 0.15em;
-}
-
-:fullscreen [data-update-status] svg,
-:-webkit-full-screen [data-update-status] svg {
-  width: 1rem;
-  height: 1rem;
+/* En fullscreen le client ne doit pas voir le footer "Up to date / Offline".
+ * On le cache complètement — le client ne devrait jamais savoir qu'il
+ * regarde une PWA. Le footer reste visible en mode fenêtré (staff debug). */
+:fullscreen footer,
+:-webkit-full-screen footer {
+  display: none;
 }

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { MENU } from "@/data/menu";
 import { LangSwitcher } from "./LangSwitcher";
-import { UpdateButton } from "./UpdateButton";
 import logo from "@/assets/lalupita-logo2.png";
 import revoLogo from "@/assets/revo-clean.png";
 import halal from "@/assets/halal.png";
@@ -114,7 +113,6 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
           })}
         </ul>
         <div className="ml-auto flex items-center gap-3 shrink-0">
-          <UpdateButton />
           <button
             type="button"
             onClick={() => onLogoTap?.("halal")}
