@@ -25,6 +25,20 @@ const STEPS: Step[] = MENU.flatMap((c) =>
 
 // Secret sequence: 2× La Lupita logo + 2× Revolución logo + 1× halal badge → VIP menu.
 const VIP_SEQUENCE = ["lalupita", "lalupita", "revo", "revo", "halal"] as const;
+// Staff gesture: 4 taps on the "Taqueria & Cocktail Bar" subtitle → toggle fullscreen.
+const FULLSCREEN_SEQUENCE = ["taqueria", "taqueria", "taqueria", "taqueria"] as const;
+
+const toggleFullscreen = () => {
+  if (typeof document === "undefined") return;
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+    return;
+  }
+  const el = document.documentElement as HTMLElement & {
+    requestFullscreen?: (opts?: FullscreenOptions) => Promise<void>;
+  };
+  el.requestFullscreen?.({ navigationUI: "hide" }).catch(() => {});
+};
 
 export function MenuPage() {
   const [stepIdx, setStepIdx] = useState(0);
@@ -33,6 +47,7 @@ export function MenuPage() {
   const [direction, setDirection] = useState(0);
   const [vipOpen, setVipOpen] = useState(false);
   const tapLogo = useSecretSequence(VIP_SEQUENCE, () => setVipOpen(true));
+  const tapSubtitle = useSecretSequence(FULLSCREEN_SEQUENCE, toggleFullscreen);
 
   const { catId: activeCat, subId: activeSub, groupId: activeGroup } = STEPS[stepIdx];
 
@@ -112,6 +127,7 @@ export function MenuPage() {
         activeSub={activeSub}
         onSelect={handleCatSelect}
         onLogoTap={tapLogo}
+        onSubtitleTap={() => tapSubtitle("taqueria")}
       />
       <SubTabs
         category={category}

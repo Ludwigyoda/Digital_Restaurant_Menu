@@ -11,9 +11,10 @@ type Props = {
   activeSub: string;
   onSelect: (catId: string, subId: string) => void;
   onLogoTap?: (id: "lalupita" | "revo" | "halal") => void;
+  onSubtitleTap?: () => void;
 };
 
-export function TopNav({ activeCat, activeSub, onSelect, onLogoTap }: Props) {
+export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTap }: Props) {
   const [openCat, setOpenCat] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -129,10 +130,15 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap }: Props) {
           <LangSwitcher />
         </div>
       </div>
-      <div className="border-t border-border/30 px-4 sm:px-8 py-1 text-center text-[9px] uppercase tracking-[0.4em] text-muted-foreground/60">
+      <button
+        type="button"
+        onClick={() => onSubtitleTap?.()}
+        aria-label="La Lupita × Revolución"
+        className="w-full border-t border-border/30 px-4 sm:px-8 py-1 text-center text-[9px] uppercase tracking-[0.4em] text-muted-foreground/60 focus:outline-none"
+      >
         <span className="en-text">La Lupita × Revolución · Taqueria & Cocktail Bar · </span>
         <span className="zh">塔可餐厅 & 鸡尾酒吧</span>
-      </div>
+      </button>
     </nav>
   );
 }

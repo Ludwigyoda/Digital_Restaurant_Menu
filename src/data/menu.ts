@@ -364,8 +364,8 @@ export const MENU: Category[] = [
           },
           {
             id: "imported",
-            nameEn: "Imported Beer",
-            nameZh: "进口啤酒",
+            nameEn: "Imported Belgium Beer",
+            nameZh: "进口比利时啤酒",
             items: [
               { id: "be-blanche-bruges", nameEn: "Blanche de Bruges", nameZh: "布鲁日白啤", descEn: "33cl", price: 40 },
               { id: "be-rose-bruges", nameEn: "Rosé de Bruges", nameZh: "布鲁日玫瑰", descEn: "33cl", price: 45 },

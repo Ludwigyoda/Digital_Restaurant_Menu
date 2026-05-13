@@ -11,6 +11,9 @@ const BLOCKED_KEYS = new Set([
  *  - blocks dev/browser shortcut keys that a customer could trigger by accident
  *  - keeps the screen awake via the Wake Lock API when available
  *  - intercepts any stray external link so it can never escape the kiosk
+ *
+ * Fullscreen is NOT forced here — staff toggles it manually via the 4-tap
+ * gesture on the "Taqueria & Cocktail Bar" subtitle (see MenuPage).
  */
 export function useKioskMode() {
   useEffect(() => {
