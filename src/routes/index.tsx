@@ -28,8 +28,17 @@ const VIP_SEQUENCE = ["lalupita", "lalupita", "revo", "revo", "halal"] as const;
 // Staff gesture: 4 taps on the "Taqueria & Cocktail Bar" subtitle → toggle fullscreen.
 const FULLSCREEN_SEQUENCE = ["taqueria", "taqueria", "taqueria", "taqueria"] as const;
 
+const isIOS = () => {
+  if (typeof navigator === "undefined") return false;
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent)) return true;
+  // iPadOS 13+ reports as MacIntel; distinguish by touch support.
+  return navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+};
+
 const toggleFullscreen = () => {
   if (typeof document === "undefined") return;
+  // iOS Safari shows an anti-phishing warning on requestFullscreen — skip.
+  if (isIOS()) return;
   if (document.fullscreenElement) {
     document.exitFullscreen().catch(() => {});
     return;
