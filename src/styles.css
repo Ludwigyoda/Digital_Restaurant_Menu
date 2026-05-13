@@ -187,3 +187,41 @@ html.lang-zh :is(.en-text) { display: none; }
   min-height: 44px;
   min-width: 44px;
 }
+
+/* ---- Fullscreen presentation mode ----
+ * Active uniquement quand <html> est en fullscreen (déclenché par le 4-tap
+ * sur le sous-titre "Taqueria & Cocktail Bar"). Re-cadre le menu comme une
+ * affiche centrée plutôt qu'un site web edge-to-edge.
+ */
+:fullscreen,
+:-webkit-full-screen {
+  background: var(--background);
+}
+
+:fullscreen main,
+:-webkit-full-screen main {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 1rem 1.5rem;
+  gap: 0.5rem;
+}
+
+/* Le canvas (grid des cartes) prend un léger fond et des coins arrondis
+ * pour se détacher comme une "carte d'affichage" du fond environnant. */
+:fullscreen [data-frame],
+:-webkit-full-screen [data-frame] {
+  border-radius: 1.25rem;
+  background: oklch(0.21 0.013 40);
+  overflow: hidden;
+}
+
+/* Typo bump : en fullscreen on lit le menu à ~40-50 cm, les tailles
+ * d'origine sont calibrées pour ~25-30 cm. +1 step partout. */
+:fullscreen .en-text,
+:-webkit-full-screen .en-text {
+  font-size: 1.05em;
+}
+:fullscreen h3.en-text,
+:-webkit-full-screen h3.en-text {
+  font-size: 1.15em;
+}

@@ -121,7 +121,7 @@ export function MenuPage() {
   };
 
   return (
-    <main className="mx-auto flex h-dvh w-full max-w-[1600px] flex-col bg-background overflow-hidden">
+    <main className="flex h-dvh w-full flex-col bg-background overflow-hidden">
       <TopNav
         activeCat={activeCat}
         activeSub={activeSub}
@@ -137,7 +137,7 @@ export function MenuPage() {
 
       <Breadcrumb sub={sub} group={group} stepIdx={stepIdx} total={STEPS.length} />
 
-      <section className="relative flex flex-1 overflow-hidden">
+      <section data-frame className="relative flex flex-1 overflow-hidden">
         {sub.groups && (
           <aside className="hidden md:flex w-44 shrink-0 flex-col gap-1 border-r border-border/50 px-3 py-6">
             <div className="mb-3 px-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
