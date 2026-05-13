@@ -1,5 +1,5 @@
 // Auto-generated mapping of item IDs to photos
-const modules = import.meta.glob("@/assets/items/*.jpg", {
+const modules = import.meta.glob("../assets/items/*.jpg", {
   eager: true,
   import: "default",
 }) as Record<string, string>;

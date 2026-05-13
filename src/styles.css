@@ -144,3 +144,52 @@ html.lang-zh :is(.en-text) { display: none; }
 .anim-scale-in { animation: scale-in 0.15s ease-out both; }
 .anim-fade-in { animation: fade-in 0.15s ease-out both; }
 .anim-drop-up { animation: drop-up 0.2s ease-out both; }
+
+/* ---- Kiosk mode (Fully Kiosk Browser tablets) ----
+ * Locks down touch behaviors that would otherwise expose browser chrome,
+ * native menus, or text selection. Applied by useKioskMode via the
+ * `kiosk-mode` class on <html>.
+ */
+.kiosk-mode,
+.kiosk-mode body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  overscroll-behavior: none;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+.kiosk-mode * {
+  -webkit-touch-callout: none;
+}
+
+.kiosk-mode input,
+.kiosk-mode textarea,
+.kiosk-mode [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.kiosk-mode ::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+/* Hide anything explicitly marked as “not for customers” when in kiosk mode. */
+.kiosk-mode [data-kiosk-hide] {
+  display: none !important;
+}
+
+/* Enlarge typical tap targets so a thumb on a tablet always lands. */
+.kiosk-mode button,
+.kiosk-mode [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}

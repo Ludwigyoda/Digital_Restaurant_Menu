@@ -1,50 +1,45 @@
-import { useEffect, useState } from "react";
-import { RefreshCw, WifiOff } from "lucide-react";
+import { Check, RefreshCw, WifiOff } from "lucide-react";
+import { applyUpdateNow } from "@/lib/pwa";
+import { useUpdateState } from "@/lib/useUpdateState";
 
 export function UpdateButton() {
-  const [online, setOnline] = useState<boolean>(() =>
-    typeof navigator !== "undefined" ? navigator.onLine : true,
-  );
+  const { online, needRefresh, offlineReady } = useUpdateState();
 
-  useEffect(() => {
-    const on = () => setOnline(true);
-    const off = () => setOnline(false);
-    window.addEventListener("online", on);
-    window.addEventListener("offline", off);
-    return () => {
-      window.removeEventListener("online", on);
-      window.removeEventListener("offline", off);
-    };
-  }, []);
+  if (needRefresh) {
+    return (
+      <button
+        type="button"
+        onClick={applyUpdateNow}
+        aria-label="Apply menu update"
+        className="flex items-center gap-2 rounded-full border border-primary/60 bg-primary/10 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-foreground transition-colors min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >
+        <RefreshCw className="h-3.5 w-3.5" />
+        <span>Update ready</span>
+      </button>
+    );
+  }
 
-  const handleUpdate = () => {
-    if (!online) return;
-    window.location.reload();
-  };
+  if (!online) {
+    return (
+      <span
+        role="status"
+        aria-label="Working offline"
+        className="flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 min-h-[36px]"
+      >
+        <WifiOff className="h-3 w-3" />
+        <span>Offline</span>
+      </span>
+    );
+  }
 
   return (
-    <button
-      type="button"
-      onClick={handleUpdate}
-      disabled={!online}
-      aria-label={online ? "Refresh menu" : "No network connection"}
-      className={`flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] transition-colors min-h-[36px] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-        online
-          ? "text-foreground/80 hover:bg-secondary cursor-pointer"
-          : "text-muted-foreground/60 cursor-not-allowed opacity-70"
-      }`}
+    <span
+      role="status"
+      aria-label={offlineReady ? "Menu cached for offline" : "Menu up to date"}
+      className="flex items-center gap-2 rounded-full border border-border/40 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-foreground/60 min-h-[36px]"
     >
-      {online ? (
-        <>
-          <RefreshCw className="h-3 w-3" />
-          <span>Update</span>
-        </>
-      ) : (
-        <>
-          <WifiOff className="h-3 w-3" />
-          <span>Offline</span>
-        </>
-      )}
-    </button>
+      <Check className="h-3 w-3" />
+      <span>{offlineReady ? "Cached" : "Up to date"}</span>
+    </span>
   );
 }

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -9,6 +10,8 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { useKioskMode } from "@/lib/useKioskMode";
+import { registerKioskSW } from "@/lib/pwa";
 
 function NotFoundComponent() {
   return (
@@ -71,7 +74,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      {
+        name: "viewport",
+        content:
+          "width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover",
+      },
       { title: "La Lupita × Revolucion — Menu" },
       { name: "description", content: "Taqueria & Cocktail Bar — Menu" },
       { property: "og:title", content: "La Lupita × Revolucion" },
@@ -120,6 +127,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useKioskMode();
+  useEffect(() => {
+    registerKioskSW();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

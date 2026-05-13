@@ -1,0 +1,2 @@
+- [Menu card style](feedback_menu_card_style.md) — keep full-bleed image + bottom overlay, don't split card into image+info-band.
+- [Deployment target](project_deployment_target.md) — single target: Tencent EdgeOne Pages (static). Cloudflare Worker and Capacitor APK paths are dead.
