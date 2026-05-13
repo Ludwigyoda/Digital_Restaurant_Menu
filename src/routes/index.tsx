@@ -121,7 +121,7 @@ export function MenuPage() {
   };
 
   return (
-    <main className="flex h-dvh flex-col bg-background overflow-hidden">
+    <main className="mx-auto flex h-dvh w-full max-w-[1600px] flex-col bg-background overflow-hidden">
       <TopNav
         activeCat={activeCat}
         activeSub={activeSub}

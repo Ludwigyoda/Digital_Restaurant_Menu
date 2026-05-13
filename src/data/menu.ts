@@ -204,7 +204,7 @@ export const MENU: Category[] = [
     id: "drinks",
     nameEn: "Drinks",
     nameZh: "酒水",
-    displayEn: "Revolucion",
+    displayEn: "Revolucion Cocktails",
     subEn: "Drinks",
     subs: [
       {
@@ -364,7 +364,7 @@ export const MENU: Category[] = [
           },
           {
             id: "imported",
-            nameEn: "Imported Belgian Beer",
+            nameEn: "Imported Belgian Beers",
             nameZh: "进口比利时啤酒",
             items: [
               { id: "be-blanche-bruges", nameEn: "Blanche de Bruges", nameZh: "布鲁日白啤", descEn: "33cl", price: 40 },
@@ -407,21 +407,21 @@ export const MENU: Category[] = [
             ],
           },
           {
-            id: "lupita-iced-tea",
-            nameEn: "Lupita Iced Tea Drinks",
-            nameZh: "露佩塔冰茶饮品",
-            items: [
-              { id: "li-lemonade-tea", nameEn: "Ice Lemonade Tea", nameZh: "冰柠檬茶", price: 30 },
-              { id: "li-jamaica", nameEn: "Jamaica Water", nameZh: "洛神花水", price: 40 },
-            ],
-          },
-          {
             id: "energy",
             nameEn: "Energy & Specials",
             nameZh: "特饮",
             items: [
               { id: "en-redbull", nameEn: "Red Bull", nameZh: "红牛", price: 40 },
               { id: "en-ginger-beer", nameEn: "Ginger Beer", nameZh: "姜味啤酒", price: 40 },
+            ],
+          },
+          {
+            id: "lupita-iced-tea",
+            nameEn: "Lupita Iced Tea Drinks",
+            nameZh: "露佩塔冰茶饮品",
+            items: [
+              { id: "li-lemonade-tea", nameEn: "Ice Lemonade Tea", nameZh: "冰柠檬茶", price: 30 },
+              { id: "li-jamaica", nameEn: "Jamaica Water", nameZh: "洛神花水", price: 40 },
             ],
           },
         ],
