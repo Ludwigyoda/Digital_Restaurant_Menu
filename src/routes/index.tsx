@@ -171,6 +171,7 @@ export function MenuPage() {
         >
           <div
             ref={canvasRef}
+            data-canvas
             key={`${activeCat}-${activeSub}-${activeGroup}-${pageIdx}`}
             className={`absolute inset-0 px-4 sm:px-8 py-6 pb-10 cursor-grab active:cursor-grabbing ${
               direction >= 0 ? "anim-slide-in-right" : "anim-slide-in-left"
