@@ -9,7 +9,6 @@
     "build:dev": "vite build --config vite.config.apk.ts --mode development",
     "build:static": "vite build --config vite.config.apk.ts",
     "preview": "vite preview --config vite.config.apk.ts",
-    "cf-typegen": "wrangler types",
     "lint": "eslint .",
     "format": "prettier --write .",
     "optimize:images": "node scripts/optimize-images.mjs"
@@ -30,10 +29,6 @@
     "vite-tsconfig-paths": "^6.0.2"
   },
   "devDependencies": {
-    "@capacitor/android": "^8.3.3",
-    "@capacitor/assets": "^3.0.5",
-    "@capacitor/cli": "^8.3.3",
-    "@capacitor/core": "^8.3.3",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "^1.5.1",
     "@types/node": "^22.16.5",
