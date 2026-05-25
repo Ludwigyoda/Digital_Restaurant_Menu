@@ -111,7 +111,6 @@ export const MENU: Category[] = [
               { id: "br-pastor", nameEn: "Burrito Chicken Pastor", nameZh: "墨西哥帕多斯烤鸡肉卷饼", descEn: "Chicken marinated spiced, cheese, beans, lettuce, rice, onion, coriander. Served with fries", descZh: "腌制鸡肉、香料奶酪、豆子、生菜、米饭、洋葱、香菜配薯条", price: 75 },
               { id: "br-tinga", nameEn: "Burrito de Tinga", nameZh: "墨西哥辣鸡肉卷饼", descEn: "Shredded chicken in smoky chipotle sauce. Served with fries", descZh: "烟熏墨西哥辣椒酱鸡肉丝配薯条", price: 68 },
               { id: "br-veg", nameEn: "Vegetarian Burrito", nameZh: "素食卷饼", descEn: "Grilled mushrooms, bell peppers, onion and cheese. Served with fries", descZh: "烤蘑菇、甜椒、洋葱和奶酪配炸薯条", price: 65 },
-              { id: "br-pollo-achiote", nameEn: "Burrito Pollo Achiote", nameZh: "墨西哥烤鸡肉卷饼", descEn: "Achiote-marinated chicken with rice, black beans", descZh: "胭脂树籽腌鸡肉配米饭和黑豆", price: 73 },
             ],
           },
           {
@@ -131,8 +130,7 @@ export const MENU: Category[] = [
             items: [
               { id: "mn-asada", nameEn: "Carne Asada Plate", nameZh: "烤牛排拼盘", descEn: "Grilled marinated skirt steak served with salad, tomato, cabbage, cucumber, vinegar", descZh: "烤腌制裙牛排配沙拉、生菜、番茄、卷心菜、黄瓜醋", price: 128 },
               { id: "mn-lamb", nameEn: "Chops Lamb Chimichurri", nameZh: "烤羊排配奇米兹里", descEn: "Grilled lamb chops served with salad, tomato, cabbage, cucumber, vinegar", descZh: "烤羊排配沙拉、番茄、卷心菜、黄瓜醋", price: 128 },
-              { id: "mn-fajitas", nameEn: "Fajitas", nameZh: "法基塔", descEn: "Grilled peppers, onions and meat of your choice on a hot cast iron skillet, with 3 sauces and 4 flour tortillas", descZh: "烤甜椒、洋葱和您选择的肉类，配3种酱汁和4张面饼", price: 70, priceAlt: [{ label: "Pastor", value: 70 }, { label: "Beef", value: 88 }, { label: "Shrimps", value: 98 }, { label: "Trio", value: 108 }] },
-              { id: "mn-pollo", nameEn: "Pollo al Achiote", nameZh: "墨西哥阿奇奥特烤鸡拼盘", descEn: "Annatto-marinated chicken served with potatoes and vegetables", descZh: "胭脂树籽烤鸡、搭配马铃薯和蔬菜", price: 88 },
+              { id: "mn-fajitas", nameEn: "Fajitas", nameZh: "法基塔", descEn: "Grilled peppers, onions and meat of your choice on a hot cast iron skillet, with 3 sauces and 4 flour tortillas", descZh: "烤甜椒、洋葱和您选择的肉类，配3种酱汁和4张面饼", price: 78, priceAlt: [{ label: "Pastor", value: 78 }, { label: "Beef", value: 88 }, { label: "Shrimps", value: 98 }, { label: "Trio", value: 108 }] },
               { id: "mn-fish", nameEn: "Grilled Fish Fillet", nameZh: "烤鱼排拼盘", descEn: "Grilled tilapia with aji amarillo cream, served with potatoes and vegetables", descZh: "烤罗非鱼配黄辣椒奶油、搭配马铃薯和蔬菜", price: 98 },
             ],
           },
