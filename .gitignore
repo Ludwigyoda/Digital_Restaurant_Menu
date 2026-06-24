@@ -26,3 +26,6 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+# Local image backups created during edits (not part of the app)
+src/assets/items_backup_*/
