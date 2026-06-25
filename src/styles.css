@@ -56,6 +56,7 @@
   --foreground-rgb: 247 238 223;       /* cream  (= conversion oklch→rgb du build) */
   --primary-rgb: 198 78 49;            /* terracotta */
   --muted-foreground-rgb: 168 156 146; /* muted-foreground */
+  --secondary-rgb: 42 34 31;           /* secondary (états hover/tap) */
   --border-rgb: 255 255 255;           /* white */
 }
 

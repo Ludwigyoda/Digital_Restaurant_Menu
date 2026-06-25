@@ -25,7 +25,9 @@ export default {
         "popover-foreground": "var(--popover-foreground)",
         primary: "rgb(var(--primary-rgb) / <alpha-value>)",
         "primary-foreground": "var(--primary-foreground)",
-        secondary: "var(--secondary)",
+        // Canal RGB : bg-secondary/50 et /60 (états hover/tap des boutons)
+        // doivent être translucides comme en v4, pas des blocs gris opaques.
+        secondary: "rgb(var(--secondary-rgb) / <alpha-value>)",
         "secondary-foreground": "var(--secondary-foreground)",
         muted: "var(--muted)",
         "muted-foreground": "rgb(var(--muted-foreground-rgb) / <alpha-value>)",
