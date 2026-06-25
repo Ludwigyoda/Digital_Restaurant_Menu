@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
+import legacy from "@vitejs/plugin-legacy";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -8,11 +8,22 @@ import { VitePWA } from "vite-plugin-pwa";
 // Kiosk Browser on restaurant tablets. The PWA layer (manifest + service
 // worker + precache) is always on so kiosks keep working when the network
 // is flaky and silently swap in the next build on idle.
+//
+// Tailwind est passé en v3 (via PostCSS, voir postcss.config.js) car la v4
+// génère du CSS (oklch, color-mix, @property) illisible par le vieux WebView
+// des tablettes RK3566. @vitejs/plugin-legacy transpile + polyfille le JS pour
+// le même moteur ancien (cible chrome >= 80). Voir le plan de migration.
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
     tsconfigPaths(),
+    legacy({
+      // Émet un bundle moderne (type=module, transpilé via build.target chrome80
+      // + polyfills modernes) ET un fallback `nomodule` legacy pour les moteurs
+      // sans support des modules ES. Couvre tout le spectre des vieux WebView.
+      targets: ["chrome >= 80"],
+      modernPolyfills: true,
+    }),
     VitePWA({
       injectRegister: false,
       // "prompt" so the new SW stays in waiting until we explicitly send
@@ -56,6 +67,8 @@ export default defineConfig({
     }),
   ],
   build: {
+    // Cible le moteur ancien du kiosk pour la syntaxe JS émise par esbuild/rollup.
+    target: "chrome80",
     outDir: "dist",
     emptyOutDir: true,
     rollupOptions: {

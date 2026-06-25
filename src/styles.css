@@ -1,49 +1,17 @@
-@import "tailwindcss" source(none);
-@source "../src";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-
-  --color-terracotta: var(--terracotta);
-  --color-talavera: var(--talavera);
-  --color-saffron: var(--saffron);
-  --color-fuchsia-mx: var(--fuchsia-mx);
-  --color-cactus: var(--cactus);
-  --color-cream: var(--cream);
-  --color-night: var(--night);
+/* Tokens du thème. Les couleurs restent en oklch ici (source de vérité) et
+ * sont converties en rgb() au build par postcss-oklab-function pour le vieux
+ * WebView du kiosk. Les variables `*-rgb` sont les canaux RGB équivalents,
+ * utilisés par Tailwind pour les modificateurs d'opacité (voir tailwind.config). */
+:root {
+  --radius: 0.75rem;
 
   --font-display: "Fraunces", "Cormorant Garamond", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-zh: "Noto Sans SC", "Source Han Sans SC", sans-serif;
-}
-
-:root {
-  --radius: 0.75rem;
 
   --cream: oklch(0.952 0.022 78);
   --night: oklch(0.18 0.012 40);
@@ -73,14 +41,21 @@
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);
   --ring: var(--terracotta);
+
+  /* Canaux RGB (équivalents sRGB des oklch ci-dessus) pour les modificateurs
+   * d'opacité Tailwind : text-foreground/80, bg-primary/10, border-border/30… */
+  --foreground-rgb: 247 238 223;       /* cream  (= conversion oklch→rgb du build) */
+  --primary-rgb: 198 78 49;            /* terracotta */
+  --muted-foreground-rgb: 168 156 146; /* muted-foreground */
+  --border-rgb: 255 255 255;           /* white */
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
+  * { border-color: var(--border); }
   html, body, #root { height: 100%; overflow: hidden; }
   body {
-    background: var(--color-background);
-    color: var(--color-foreground);
+    background: var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     overscroll-behavior: none;
@@ -146,6 +121,7 @@ html.lang-zh :is(.en-text) { display: none; }
  */
 .kiosk-mode,
 .kiosk-mode body {
+  height: 100vh; /* fallback pour WebView < Chrome 108 (dvh non supporté) */
   height: 100dvh;
   width: 100%;
   margin: 0;
