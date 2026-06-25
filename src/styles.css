@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fallback dvh -> vh pour les vieux WebView du kiosk (< Chrome 108, dvh non
+ * supporté). Sans ça, `h-dvh` sur <main> est invalide → le conteneur n'a aucune
+ * hauteur → tous les flex-1 dessous s'effondrent → la grille des plats devient
+ * invisible. Le navigateur moderne applique 100dvh, l'ancien 100vh. */
+.h-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
+
 /* Tokens du thème. Les couleurs restent en oklch ici (source de vérité) et
  * sont converties en rgb() au build par postcss-oklab-function pour le vieux
  * WebView du kiosk. Les variables `*-rgb` sont les canaux RGB équivalents,
