@@ -9,7 +9,7 @@ type UpdateState = {
 type Listener = (state: UpdateState) => void;
 
 const IDLE_MS_BEFORE_APPLY = 8_000;
-const PERIODIC_CHECK_MS = 60 * 60 * 1000; // re-check every hour
+const PERIODIC_CHECK_MS = 2 * 60 * 1000; // re-check every 2 min so new deploys land fast
 const ONLINE_CHECK_DEBOUNCE_MS = 5_000;
 
 const listeners = new Set<Listener>();
