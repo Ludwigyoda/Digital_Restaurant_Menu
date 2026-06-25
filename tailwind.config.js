@@ -1,11 +1,26 @@
 /** @type {import('tailwindcss').Config} */
 // Config Tailwind v3 — reprend à l'identique les tokens qui étaient déclarés
 // dans le bloc `@theme inline { … }` de src/styles.css (supprimé avec la v4).
-// Les couleurs restent définies en CSS variables dans :root (converties en rgb
-// par postcss-oklab-function au build). Les 4 tokens utilisés avec un
-// modificateur d'opacité dans le JSX (foreground, primary, border,
-// muted-foreground) sont déclarés en canaux RGB + `<alpha-value>` pour que
-// `text-foreground/80`, `bg-primary/10`, `border-border/30`, etc. fonctionnent.
+//
+// Les tokens utilisés avec un modificateur d'opacité (foreground, primary,
+// secondary, muted-foreground, border) sont déclarés via une FONCTION couleur
+// qui émet du `rgba()` ANCIENNE syntaxe (rgba(r, g, b, a)). C'est volontaire :
+// la syntaxe moderne `rgb(r g b / a)` exige Chrome ≥ 66, et on ne connaît pas
+// l'âge exact du WebView du kiosk. rgba() marche sur tout moteur. Les valeurs
+// RGB sont les équivalents sRGB exacts des oklch d'origine (mêmes couleurs v4).
+
+// Émet du rgba() legacy. `base` permet de pré-multiplier l'alpha (utilisé pour
+// --border qui valait blanc 8 % : border-border/50 -> 8 % * 50 % = 4 %, = v4).
+// opacityValue est numérique avec un modificateur (/50 -> "0.5") et non
+// numérique (undefined ou une var) pour la classe de base -> alpha = base.
+const withAlpha =
+  (r, g, b, base = 1) =>
+  ({ opacityValue }) => {
+    const n = Number(opacityValue);
+    const a = Number.isFinite(n) ? n * base : base;
+    return `rgba(${r}, ${g}, ${b}, ${Number(a.toFixed(4))})`;
+  };
+
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
@@ -18,30 +33,25 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
-        foreground: "rgb(var(--foreground-rgb) / <alpha-value>)",
+        foreground: withAlpha(247, 238, 223), // cream
         card: "var(--card)",
         "card-foreground": "var(--card-foreground)",
         popover: "var(--popover)",
         "popover-foreground": "var(--popover-foreground)",
-        primary: "rgb(var(--primary-rgb) / <alpha-value>)",
+        primary: withAlpha(198, 78, 49), // terracotta
         "primary-foreground": "var(--primary-foreground)",
-        // Canal RGB : bg-secondary/50 et /60 (états hover/tap des boutons)
-        // doivent être translucides comme en v4, pas des blocs gris opaques.
-        secondary: "rgb(var(--secondary-rgb) / <alpha-value>)",
+        // bg-secondary/50 et /60 = états hover/tap des boutons (voiles légers).
+        secondary: withAlpha(42, 34, 31),
         "secondary-foreground": "var(--secondary-foreground)",
         muted: "var(--muted)",
-        "muted-foreground": "rgb(var(--muted-foreground-rgb) / <alpha-value>)",
+        "muted-foreground": withAlpha(168, 156, 146),
         accent: "var(--accent)",
         "accent-foreground": "var(--accent-foreground)",
         destructive: "var(--destructive)",
         "destructive-foreground": "var(--destructive-foreground)",
-        // L'alpha-value (NN/100) est multiplié par 0.08 pour reproduire
-        // exactement le comportement color-mix de Tailwind v4 sur --border
-        // (blanc 8 %). Sinon `border-border/50` donnait du blanc 50 % criard
-        // au lieu du fin liseré voulu (0.5 * 0.08 = 4 %).
-        //   border-border    -> 1   * 0.08 = 8 %   (= v4)
-        //   border-border/50 -> 0.5 * 0.08 = 4 %   (= v4)
-        border: "rgb(var(--border-rgb) / calc(<alpha-value> * 0.08))",
+        // --border valait blanc 8 % ; border-border/50 -> 8 % * 50 % = 4 %
+        // (fin liseré, exactement comme la v4 via color-mix).
+        border: withAlpha(255, 255, 255, 0.08),
         input: "var(--input)",
         ring: "var(--ring)",
 

@@ -50,14 +50,6 @@
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);
   --ring: var(--terracotta);
-
-  /* Canaux RGB (équivalents sRGB des oklch ci-dessus) pour les modificateurs
-   * d'opacité Tailwind : text-foreground/80, bg-primary/10, border-border/30… */
-  --foreground-rgb: 247 238 223;       /* cream  (= conversion oklch→rgb du build) */
-  --primary-rgb: 198 78 49;            /* terracotta */
-  --muted-foreground-rgb: 168 156 146; /* muted-foreground */
-  --secondary-rgb: 42 34 31;           /* secondary (états hover/tap) */
-  --border-rgb: 255 255 255;           /* white */
 }
 
 @layer base {
