@@ -62,6 +62,19 @@ export default {
         cactus: "var(--cactus)",
         cream: "var(--cream)",
         night: "var(--night)",
+
+        // Palette par défaut redéfinie en rgba() legacy : sinon Tailwind émet
+        // ces couleurs à opacité (bg-black/40, from-black/85, text-white/70,
+        // text-amber-200…) en `rgb(r g b / a)` que le vieux moteur ne lit pas
+        // -> dégradés des photos et texte blanc/ambre cassés. Valeurs = Tailwind.
+        black: withAlpha(0, 0, 0),
+        white: withAlpha(255, 255, 255),
+        amber: {
+          100: withAlpha(254, 243, 199),
+          200: withAlpha(253, 230, 138),
+          300: withAlpha(252, 211, 77),
+          400: withAlpha(251, 191, 36),
+        },
       },
       borderRadius: {
         sm: "calc(var(--radius) - 4px)",

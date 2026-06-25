@@ -64,6 +64,12 @@ export default defineConfig({
   build: {
     // Cible le moteur ancien du kiosk pour la syntaxe JS émise par esbuild/rollup.
     target: "chrome80",
+    // CSS visé très bas : le kiosk (Chine, pas de WebView Google moderne) tourne
+    // sur un moteur ancien et non-standard (type Tencent X5/TBS, ~Chrome 53).
+    // chrome61 empêche esbuild d'émettre des hex 8 chiffres (#rrggbbaa, Chrome
+    // 62+). Les couleurs à opacité sont déjà écrites en rgba() legacy via
+    // tailwind.config (withAlpha) pour ne pas dépendre de `rgb(r g b / a)`.
+    cssTarget: "chrome61",
     outDir: "dist",
     emptyOutDir: true,
     rollupOptions: {
