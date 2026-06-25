@@ -216,7 +216,17 @@ export function MenuPage() {
         </div>
       </section>
 
-      <footer className="flex items-center justify-end border-t border-border/60 px-4 sm:px-8 py-3">
+      <footer className="flex items-center justify-between border-t border-border/60 px-4 sm:px-8 py-3">
+        {/* DIAGNOSTIC TEMPORAIRE : version du moteur du kiosk. Masqué en
+            plein écran (mode client) via `:fullscreen footer { display:none }`.
+            À retirer une fois le moteur identifié. */}
+        <span className="text-[9px] uppercase tracking-wider text-muted-foreground/60">
+          {typeof navigator !== "undefined"
+            ? (navigator.userAgent.match(/(Chrome|CriOS|Version|TBS|XWEB|MQQBrowser)\/[\d.]+/g) || [
+                navigator.userAgent.slice(0, 48),
+              ]).join(" · ")
+            : ""}
+        </span>
         <UpdateButton />
       </footer>
 

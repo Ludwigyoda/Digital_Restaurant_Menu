@@ -76,6 +76,13 @@ export default {
           400: withAlpha(251, 191, 36),
         },
       },
+      // Par défaut Tailwind borde TOUT élément en gris clair #e5e7eb (quasi
+      // blanc). Si le vieux moteur du kiosk n'applique pas l'override
+      // `* { border-color: var(--border) }`, toute la structure apparaît
+      // bordée de blanc. On force donc la bordure par défaut au liseré sombre.
+      borderColor: {
+        DEFAULT: "rgba(255, 255, 255, 0.08)",
+      },
       borderRadius: {
         sm: "calc(var(--radius) - 4px)",
         md: "calc(var(--radius) - 2px)",
