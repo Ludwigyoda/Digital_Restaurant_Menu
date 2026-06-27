@@ -51,7 +51,7 @@ export function VipModal({ open, onClose }: { open: boolean; onClose: () => void
 
   return (
     <div
-      className="anim-fade-in fixed inset-0 z-[80] flex items-center justify-center bg-black/85 p-6 backdrop-blur-md"
+      className="anim-fade-in fixed inset-0 z-[80] flex items-center justify-center bg-black/90 p-6"
       onClick={onClose}
     >
       <div
@@ -64,7 +64,7 @@ export function VipModal({ open, onClose }: { open: boolean; onClose: () => void
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-10 rounded-full bg-black/60 p-2 text-amber-200 backdrop-blur transition-colors hover:bg-black/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+          className="absolute right-4 top-4 z-10 rounded-full bg-black/70 p-2 text-amber-200 transition-colors hover:bg-black/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
@@ -98,7 +98,7 @@ export function VipModal({ open, onClose }: { open: boolean; onClose: () => void
                 key={item.id}
                 className="rounded-2xl border border-amber-400/15 bg-black/30 p-5 transition-colors hover:border-amber-400/30"
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start justify-between space-x-4">
                   <div className="min-w-0 flex-1">
                     <h3 className="en-text font-display text-xl text-amber-100">
                       {item.nameEn}

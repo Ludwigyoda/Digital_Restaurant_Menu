@@ -31,7 +31,7 @@ export function ItemModal({
 
   return (
     <div
-      className="anim-fade-in fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm"
+      className="anim-fade-in fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-6"
       onClick={onClose}
     >
       <div
@@ -40,7 +40,7 @@ export function ItemModal({
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-10 rounded-full bg-black/40 p-2 text-white backdrop-blur-md hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="absolute right-4 top-4 z-10 rounded-full bg-black/60 p-2 text-white hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
@@ -58,7 +58,7 @@ export function ItemModal({
           )}
         </div>
 
-        <div className="flex flex-col gap-4 p-8 overflow-y-auto">
+        <div className="flex flex-col space-y-4 p-8 overflow-y-auto">
           <div>
             <h2 className="en-text font-display text-3xl text-foreground">
               {item.nameEn}
@@ -93,11 +93,11 @@ export function ItemModal({
                 <span className="en-text">Allergens · </span>
                 <span className="zh">过敏原</span>
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap -m-1">
                 {allergens.map((id) => (
                   <span
                     key={id}
-                    className="inline-flex items-center gap-1 rounded-full border border-border/50 px-2.5 py-1 text-xs"
+                    className="m-1 inline-flex items-center space-x-1 rounded-full border border-border/50 px-2.5 py-1 text-xs"
                   >
                     <span aria-hidden>{ALLERGEN_META[id].emoji}</span>
                     <span className="en-text text-foreground/80">{ALLERGEN_META[id].en}</span>
@@ -110,9 +110,9 @@ export function ItemModal({
 
           <div className="mt-auto border-t border-border/60 pt-4">
             {item.priceAlt ? (
-              <div className="flex flex-wrap gap-6">
+              <div className="flex flex-wrap -m-3">
                 {item.priceAlt.map((p) => (
-                  <div key={p.label} className="flex flex-col">
+                  <div key={p.label} className="m-3 flex flex-col">
                     <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                       {p.label}
                     </span>

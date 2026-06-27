@@ -148,7 +148,7 @@ export function MenuPage() {
 
       <section data-frame className="relative flex flex-1 overflow-hidden">
         {sub.groups && (
-          <aside className="hidden md:flex w-44 shrink-0 flex-col gap-1 border-r border-border/50 px-3 py-6">
+          <aside className="hidden md:flex w-44 shrink-0 flex-col space-y-1 border-r border-border/50 px-3 py-6">
             <div className="mb-3 px-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
               <span className="en-text">{sub.nameEn}</span>
             </div>
@@ -202,7 +202,7 @@ export function MenuPage() {
           </div>
 
           {pages.length > 1 && (
-            <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 flex gap-1.5">
+            <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 flex space-x-1.5">
               {pages.map((_, i) => (
                 <span
                   key={i}
@@ -239,7 +239,7 @@ export function MenuPage() {
       <VipModal open={vipOpen} onClose={() => setVipOpen(false)} />
 
       {warningSecondsLeft !== null && (
-        <div className="anim-drop-up pointer-events-none fixed bottom-20 left-1/2 z-[70] -translate-x-1/2 rounded-full bg-foreground/90 px-6 py-3 text-background shadow-2xl backdrop-blur">
+        <div className="anim-drop-up pointer-events-none fixed bottom-20 left-1/2 z-[70] -translate-x-1/2 rounded-full bg-foreground px-6 py-3 text-background shadow-2xl">
           <span className="text-xs uppercase tracking-[0.25em]">
             <span className="en-text">Returning to start in {warningSecondsLeft}s · tap to cancel</span>
             <span className="zh">{warningSecondsLeft} 秒后返回起点 · 点击取消</span>

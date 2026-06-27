@@ -23,6 +23,10 @@ const withAlpha =
 
 export default {
   darkMode: ["class"],
+  // Les variantes `hover:` ne s'appliquent QUE sur un pointeur qui survole
+  // vraiment (souris) via @media (hover: hover). Sur l'écran tactile du kiosk,
+  // taper ne déclenche plus un :hover qui reste « collé » en gris.
+  future: { hoverOnlyWhenSupported: true },
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   safelist: [
     // Classes de grille construites dynamiquement dans src/lib/gridLayout.ts

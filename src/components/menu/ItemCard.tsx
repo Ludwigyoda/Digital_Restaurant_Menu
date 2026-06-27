@@ -51,7 +51,7 @@ export function ItemCard({
             loading="lazy"
             width={1024}
             height={768}
-            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.04]"
+            className="h-full w-full object-cover"
           />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-secondary to-card" />
@@ -59,7 +59,7 @@ export function ItemCard({
 
         {/* Bottom opaque overlay with name + short desc + price */}
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/55 to-transparent p-4 pt-10">
-          <div className="flex items-end justify-between gap-3">
+          <div className="flex items-end justify-between space-x-3">
             <div className="min-w-0">
               <h3 className="en-text font-display text-lg leading-tight text-white truncate">
                 {item.nameEn}
@@ -76,7 +76,7 @@ export function ItemCard({
               )}
               {visibleAllergens.length > 0 && (
                 <div
-                  className="mt-1.5 flex items-center gap-1 text-[12px]"
+                  className="mt-1.5 flex items-center space-x-1 text-[12px]"
                   aria-label="Allergens"
                 >
                   {visibleAllergens.map((id) => (
@@ -117,7 +117,7 @@ export function ItemCard({
         {/* Accent-ringed Plus affordance: signals tap-for-details + colors per category */}
         <span
           aria-hidden
-          className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-transform duration-200 group-hover:scale-110"
+          className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/60"
           style={{
             border: `1.5px solid ${accent}`,
             boxShadow: `0 0 8px ${accent}`,

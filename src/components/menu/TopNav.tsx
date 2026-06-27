@@ -33,8 +33,8 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
           Since 2012
         </span>
       </div>
-      <div className="flex items-center gap-4 px-4 sm:px-8 py-4">
-        <div className="shrink-0 flex items-center gap-4">
+      <div className="flex items-center px-4 sm:px-8 py-4">
+        <div className="shrink-0 flex items-center space-x-4">
           <button
             type="button"
             onClick={() => onLogoTap?.("lalupita")}
@@ -64,7 +64,7 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
             />
           </button>
         </div>
-        <ul className="flex items-center gap-1 flex-wrap">
+        <ul className="ml-4 flex items-center space-x-1 flex-wrap">
           {MENU.map((cat) => {
             const isActive = cat.id === activeCat;
             const isOpen = openCat === cat.id;
@@ -72,7 +72,7 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
               <li key={cat.id} className="relative shrink-0">
                 <button
                   onClick={() => setOpenCat(isOpen ? null : cat.id)}
-                  className={`flex items-center gap-3 rounded-2xl px-4 py-2 transition-colors min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                  className={`flex items-center space-x-3 rounded-2xl px-4 py-2 transition-colors min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                     isActive
                       ? "bg-foreground text-background"
                       : "text-foreground/80 hover:bg-secondary"
@@ -117,7 +117,7 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
             );
           })}
         </ul>
-        <div className="ml-auto flex items-center gap-3 shrink-0">
+        <div className="ml-auto flex items-center space-x-3 shrink-0">
           <button
             type="button"
             onClick={() => onLogoTap?.("halal")}
