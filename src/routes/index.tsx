@@ -217,12 +217,14 @@ export function MenuPage() {
       </section>
 
       <footer className="flex items-center justify-between border-t border-border/60 px-4 sm:px-8 py-3">
-        {/* DIAGNOSTIC TEMPORAIRE : version du moteur du kiosk. Masqué en
-            plein écran (mode client) via `:fullscreen footer { display:none }`.
-            À retirer une fois le moteur identifié. */}
+        {/* DIAGNOSTIC TEMPORAIRE : build + moteur. Masqué en plein écran via
+            `:fullscreen footer { display:none }`, d'où le petit marqueur fixe
+            ci-dessous (lui, visible même en plein écran). À retirer ensuite. */}
         <span className="text-[9px] uppercase tracking-wider text-muted-foreground/60">
+          build {__BUILD_ID__}
           {typeof navigator !== "undefined"
-            ? (navigator.userAgent.match(/(Chrome|CriOS|Version|TBS|XWEB|MQQBrowser)\/[\d.]+/g) || [
+            ? " · " +
+              (navigator.userAgent.match(/(Chrome|CriOS|Version|TBS|XWEB|MQQBrowser)\/[\d.]+/g) || [
                 navigator.userAgent.slice(0, 48),
               ]).join(" · ")
             : ""}
@@ -246,6 +248,13 @@ export function MenuPage() {
           </span>
         </div>
       )}
+
+      {/* DIAGNOSTIC TEMPORAIRE : marqueur de build visible MÊME en plein écran
+          (le footer, lui, est masqué en plein écran). Permet de vérifier quelle
+          version tourne réellement sur le kiosk. À retirer une fois confirmé. */}
+      <span className="pointer-events-none fixed bottom-1 left-1 z-[90] text-[8px] tracking-wider text-white/25">
+        b{__BUILD_ID__}
+      </span>
     </main>
   );
 }

@@ -54,6 +54,27 @@
 
 @layer base {
   * { border-color: var(--border); }
+
+  /* Reset boutons compatible Chrome 83. Le reset de Tailwind (Preflight) cible
+   * `button, input:where([type=button])…` : le `:where()` (Chrome 88+) est
+   * inconnu du WebView du kiosk → toute la règle est invalidée → les <button>
+   * gardent leur apparence NATIVE Android (fond gris/blanc + gris au tap).
+   * On réapplique donc le reset sans `:where()`. */
+  button,
+  [type="button"],
+  [type="reset"],
+  [type="submit"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    background-image: none;
+    color: inherit;
+    font: inherit;
+  }
+
+  /* `[hidden]` : Preflight utilise aussi `:where()` (invalide sur Chrome 83). */
+  [hidden] { display: none; }
+
   html, body, #root { height: 100%; overflow: hidden; }
   body {
     background: var(--background);
@@ -78,9 +99,10 @@
   .text-balance { text-wrap: balance; }
 }
 
-/* Language toggling — driven by classes set on <html> via LangSwitcher */
-html.lang-en :is(.zh) { display: none; }
-html.lang-zh :is(.en-text) { display: none; }
+/* Language toggling — driven by classes set on <html> via LangSwitcher.
+ * Sélecteurs simples (pas de :is(), non supporté par Chrome 83). */
+html.lang-en .zh { display: none; }
+html.lang-zh .en-text { display: none; }
 /* lang-both : both visible (default, no rule needed) */
 
 /* Snappy reveal/swipe animations (replace Framer Motion) */

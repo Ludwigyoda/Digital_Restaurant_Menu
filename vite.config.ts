@@ -15,7 +15,17 @@ import { VitePWA } from "vite-plugin-pwa";
 // donc pas de plugin-legacy : il forçait le build du service worker vers une
 // cible chrome64 que l'esbuild de Bun ne sait pas transpiler (échec sur Tencent).
 // `build.target: chrome80` suffit à abaisser la syntaxe JS par sécurité.
+// Identifiant de build (MMJJ-HHmm) injecté dans l'app et affiché en bas du
+// menu, pour vérifier d'un coup d'œil quelle version tourne réellement sur le
+// kiosk (utile tant que les mises à jour à distance posent question).
+const _d = new Date();
+const _p = (n: number) => String(n).padStart(2, "0");
+const BUILD_ID = `${_p(_d.getMonth() + 1)}${_p(_d.getDate())}-${_p(_d.getHours())}${_p(_d.getMinutes())}`;
+
 export default defineConfig({
+  define: {
+    __BUILD_ID__: JSON.stringify(BUILD_ID),
+  },
   plugins: [
     react(),
     tsconfigPaths(),
@@ -51,12 +61,18 @@ export default defineConfig({
         ],
       },
       injectManifest: {
-        // Precache every emitted asset so the kiosk works offline from the
-        // first launch. The new SW only activates once every entry is
-        // fetched, so the old bundle keeps serving until the new one is
-        // fully ready.
-        globPatterns: ["**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp,avif,woff,woff2,webmanifest}"],
-        maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
+        // IMPORTANT : on ne pré-cache QUE la coquille de l'app (js/css/html +
+        // icônes/manifest). Les ~16 Mo de photos NE sont plus dans le précache.
+        // Avant, le nouveau service worker devait télécharger les 16 Mo AVANT de
+        // pouvoir s'activer ; sur la connexion du kiosk (Chine, variable) ça
+        // n'aboutissait jamais → la mise à jour ne s'appliquait jamais et le
+        // kiosk restait bloqué sur l'ancienne version. Désormais l'install est
+        // minuscule → les mises à jour passent. Les photos sont mises en cache au
+        // premier affichage via la route CacheFirst "menu-images" (offline OK
+        // après une première navigation).
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
+        globIgnores: ["**/assets/*-*.{jpg,jpeg,webp,avif}"],
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
       devOptions: { enabled: false, type: "module" },
     }),
