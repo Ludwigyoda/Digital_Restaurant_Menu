@@ -107,7 +107,7 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
                           }`}
                         >
                           <span className="en-text font-medium text-foreground">{sub.nameEn}</span>
-                          <span className="zh text-sm text-muted-foreground">{sub.nameZh}</span>
+                          <span className="zh text-base text-muted-foreground">{sub.nameZh}</span>
                         </button>
                       );
                     })}

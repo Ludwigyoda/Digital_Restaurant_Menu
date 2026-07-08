@@ -167,7 +167,7 @@ export function MenuPage() {
                   <div className="en-text font-display text-base leading-tight">
                     {g.nameEn}
                   </div>
-                  <div className="zh text-[11px] opacity-70">{g.nameZh}</div>
+                  <div className="zh text-[13px] opacity-90">{g.nameZh}</div>
                 </button>
               );
             })}

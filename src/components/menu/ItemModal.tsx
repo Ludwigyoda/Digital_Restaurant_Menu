@@ -64,7 +64,7 @@ export function ItemModal({
               {item.nameEn}
             </h2>
             {hasCJK(item.nameZh) && (
-              <p className="zh mt-1 text-base text-muted-foreground">
+              <p className="zh mt-1 text-lg text-muted-foreground">
                 {item.nameZh}
               </p>
             )}
@@ -82,7 +82,7 @@ export function ItemModal({
                 <p className="en-text text-foreground/80">{item.descEn}</p>
               )}
               {hasCJK(item.descZh) && (
-                <p className="zh text-muted-foreground">{item.descZh}</p>
+                <p className="zh text-base text-muted-foreground">{item.descZh}</p>
               )}
             </div>
           )}

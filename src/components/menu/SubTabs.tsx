@@ -22,7 +22,7 @@ export function SubTabs({ category, activeSub, onSelect }: Props) {
             }`}
           >
             <span className="en-text font-display text-base">{sub.nameEn}</span>
-            <span className="zh text-xs opacity-70">{sub.nameZh}</span>
+            <span className="zh text-sm opacity-90">{sub.nameZh}</span>
           </button>
         );
       })}

@@ -23,7 +23,9 @@
   --font-zh: "Noto Sans SC", "Source Han Sans SC", sans-serif;
 
   --cream: oklch(0.952 0.022 78);
-  --night: oklch(0.18 0.012 40);
+  /* Fond réchauffé + assombri pour compenser la dalle du kiosk (rendu riche
+   * au lieu du gris plat). Design d'origine : oklch(0.18 0.012 40). */
+  --night: oklch(0.155 0.021 42);
 
   --terracotta: oklch(0.58 0.16 35);
   --talavera: oklch(0.58 0.08 195);
@@ -33,15 +35,15 @@
 
   --background: var(--night);
   --foreground: var(--cream);
-  --card: oklch(0.22 0.014 40);
+  --card: oklch(0.2 0.023 42);
   --card-foreground: var(--cream);
-  --popover: oklch(0.22 0.014 40);
+  --popover: oklch(0.2 0.023 42);
   --popover-foreground: var(--cream);
   --primary: var(--terracotta);
   --primary-foreground: var(--cream);
-  --secondary: oklch(0.26 0.014 40);
+  --secondary: oklch(0.25 0.022 42);
   --secondary-foreground: var(--cream);
-  --muted: oklch(0.26 0.014 40);
+  --muted: oklch(0.25 0.022 42);
   --muted-foreground: oklch(0.7 0.02 60);
   --accent: var(--terracotta);
   --accent-foreground: var(--cream);
@@ -211,7 +213,7 @@ html.lang-zh .en-text { display: none; }
 :fullscreen [data-frame],
 :-webkit-full-screen [data-frame] {
   border-radius: 1.25rem;
-  background: oklch(0.21 0.013 40);
+  background: oklch(0.19 0.021 42);
   overflow: hidden;
 }
 

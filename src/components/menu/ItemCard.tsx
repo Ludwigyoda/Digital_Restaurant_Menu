@@ -65,7 +65,7 @@ export function ItemCard({
                 {item.nameEn}
               </h3>
               {showZh && (
-                <p className="zh mt-0.5 text-xs text-white/70 truncate">
+                <p className="zh mt-0.5 text-sm text-white/90 truncate">
                   {item.nameZh}
                 </p>
               )}

@@ -45,7 +45,7 @@ export default {
         primary: withAlpha(198, 78, 49), // terracotta
         "primary-foreground": "var(--primary-foreground)",
         // bg-secondary/50 et /60 = états hover/tap des boutons (voiles légers).
-        secondary: withAlpha(42, 34, 31),
+        secondary: withAlpha(43, 30, 25),
         "secondary-foreground": "var(--secondary-foreground)",
         muted: "var(--muted)",
         "muted-foreground": withAlpha(168, 156, 146),
