@@ -186,19 +186,38 @@ export function MenuPage() {
               direction >= 0 ? "anim-slide-in-right" : "anim-slide-in-left"
             }`}
           >
-            <div className={`grid h-full w-full gap-3 sm:gap-4 ${layout.gridClass}`}>
-              {items.map((item, i) => (
-                <ItemCard
-                  key={item.id}
-                  item={item}
-                  index={i}
-                  onOpen={setOpenItem}
-                  spanClass={i === 0 ? layout.heroSpan : ""}
-                  fallbackAccent={fallbackAccent}
-                  isHero={i === 0 && layout.heroSpan !== ""}
-                />
-              ))}
-            </div>
+            {items.length === 1 ? (
+              /* Un seul plat : on ne l'étire pas sur tout le canvas (moche).
+               * On le centre à une taille proche d'une carte "héro" d'une page
+               * pleine, pour rester cohérent avec la grille multi-plats.
+               * (pas d'aspect-ratio : non supporté par le WebView Chrome 83) */
+              <div className="flex h-full w-full items-center justify-center">
+                <div className="h-full max-h-[540px] w-full max-w-[620px]">
+                  <ItemCard
+                    item={items[0]}
+                    index={0}
+                    onOpen={setOpenItem}
+                    spanClass=""
+                    fallbackAccent={fallbackAccent}
+                    isHero={false}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className={`grid h-full w-full gap-3 sm:gap-4 ${layout.gridClass}`}>
+                {items.map((item, i) => (
+                  <ItemCard
+                    key={item.id}
+                    item={item}
+                    index={i}
+                    onOpen={setOpenItem}
+                    spanClass={i === 0 ? layout.heroSpan : ""}
+                    fallbackAccent={fallbackAccent}
+                    isHero={i === 0 && layout.heroSpan !== ""}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {pages.length > 1 && (
