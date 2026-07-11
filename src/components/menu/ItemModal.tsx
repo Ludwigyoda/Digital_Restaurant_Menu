@@ -5,6 +5,11 @@ import { ITEM_IMAGES } from "@/data/itemImages";
 import { hasCJK } from "@/lib/i18n";
 import { ALLERGEN_META, detectAllergens } from "@/lib/allergens";
 import { PriceTag } from "./PriceTag";
+import shishaImg from "@/assets/shisha.jpg";
+
+// Les parfums shisha (lv-/rv-) n'ont pas de photo propre : la vue Shisha les
+// liste en texte. Dans le détail, on montre la photo de narguilé de la catégorie.
+const isShishaFlavor = (id: string) => /^(lv|rv)-/.test(id);
 
 export function ItemModal({
   item,
@@ -28,6 +33,7 @@ export function ItemModal({
   if (!item) return null;
 
   const allergens = detectAllergens(item);
+  const image = isShishaFlavor(item.id) ? shishaImg : ITEM_IMAGES[item.id];
 
   return (
     <div
@@ -47,9 +53,9 @@ export function ItemModal({
         </button>
 
         <div className="bg-secondary portrait:h-[40vh] landscape:md:h-full landscape:md:aspect-auto aspect-[4/3]">
-          {ITEM_IMAGES[item.id] && (
+          {image && (
             <img
-              src={ITEM_IMAGES[item.id]}
+              src={image}
               alt={item.nameEn}
               width={1024}
               height={768}

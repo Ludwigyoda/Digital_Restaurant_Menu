@@ -136,8 +136,8 @@ export const MENU: Category[] = [
           },
           {
             id: "bowls",
-            nameEn: "Bowls",
-            nameZh: "沙拉碗",
+            nameEn: "Bowls & Specialties",
+            nameZh: "沙拉碗 & 招牌",
             items: [
               { id: "sp-quesabirria", nameEn: "Corn Quesabirria Soup", nameZh: "墨西哥炖牛肉汤", descEn: "Slow-cooked beef soup served with 3 corn quesabirria", descZh: "炖牛肉汤配3个玉米煎饼", price: 78 },
               { id: "bw-birria", nameEn: "Birria Bowl", nameZh: "炖牛肉沙拉碗", descEn: "Slow-cooked beef cheek with herbs and chili, served over greens, beans and grilled vegetables", descZh: "慢炖牛腮肉配香草和辣椒搭配生菜、豆类和炒蔬菜", price: 78 },
@@ -293,7 +293,6 @@ export const MENU: Category[] = [
               { id: "lc-cantarito", nameEn: "Cantarito", nameZh: "坎塔里托", price: 80, accent: "terracotta" },
               { id: "lc-batanga", nameEn: "Batanga", nameZh: "巴坦加", price: 80, accent: "terracotta" },
               { id: "lc-margarita-lupita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "cactus" },
-              { id: "lc-water", nameEn: "Water", nameZh: "矿泉水", price: 10, accent: "talavera" },
             ],
           },
         ],
@@ -395,6 +394,7 @@ export const MENU: Category[] = [
               { id: "sd-ginger-ale", nameEn: "Ginger Ale", nameZh: "姜汁汽水", price: 30 },
               { id: "sd-soda", nameEn: "Soda Water", nameZh: "苏打水", price: 30 },
               { id: "sd-tonic", nameEn: "Tonic Water", nameZh: "汤力水", price: 30 },
+              { id: "lc-water", nameEn: "Water", nameZh: "矿泉水", price: 10, accent: "talavera" },
             ],
           },
           {

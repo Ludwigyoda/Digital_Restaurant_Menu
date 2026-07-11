@@ -1,6 +1,6 @@
 import type { Item } from "@/data/menu";
 import { PriceTag } from "./PriceTag";
-import shishaImg from "@/assets/items/rv-love66.jpg";
+import shishaImg from "@/assets/shisha.jpg";
 
 type Group = { id: string; nameEn: string; nameZh: string; items: Item[] };
 

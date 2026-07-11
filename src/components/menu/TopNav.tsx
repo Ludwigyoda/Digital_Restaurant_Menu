@@ -44,9 +44,9 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
             <img
               src={logo}
               alt="La Lupita Taqueria"
-              width={120}
-              height={48}
-              className="h-12 w-auto object-contain pointer-events-none"
+              width={173}
+              height={56}
+              className="h-14 w-auto object-contain pointer-events-none"
             />
           </button>
           <button
@@ -58,9 +58,9 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
             <img
               src={revoLogo}
               alt="Revolucion Cocktail"
-              width={120}
-              height={48}
-              className="h-12 w-auto object-contain pointer-events-none"
+              width={64}
+              height={64}
+              className="h-16 w-16 object-contain pointer-events-none"
             />
           </button>
         </div>
@@ -127,9 +127,9 @@ export function TopNav({ activeCat, activeSub, onSelect, onLogoTap, onSubtitleTa
             <img
               src={halal}
               alt="Mexican Halal Food 100%"
-              width={48}
-              height={48}
-              className="h-12 w-12 object-contain pointer-events-none"
+              width={64}
+              height={64}
+              className="h-16 w-16 object-contain pointer-events-none"
             />
           </button>
           <LangSwitcher />
