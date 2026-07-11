@@ -77,7 +77,14 @@ export function MenuPage() {
   }, [sub, activeGroup]);
 
   const allItems = group?.items ?? sub.items ?? [];
-  const itemsPerPage = allItems.length <= 6 ? Math.max(allItems.length, 1) : 5;
+  // Boissons : 5 cartes portrait max par page (au-delà on pagine), pour garder
+  // le rendu de la page 5 colonnes. Food : jusqu'à 6 en grille.
+  const itemsPerPage =
+    activeCat === "drinks"
+      ? Math.max(Math.min(allItems.length, 5), 1)
+      : allItems.length <= 6
+        ? Math.max(allItems.length, 1)
+        : 5;
   const pages = useMemo(() => chunk(allItems, itemsPerPage), [allItems, itemsPerPage]);
   const items = pages[Math.min(pageIdx, pages.length - 1)] ?? [];
   const layout = getGridLayout(items.length, activeCat === "drinks");
@@ -191,10 +198,34 @@ export function MenuPage() {
           >
             {activeSub === "shisha" && sub.groups ? (
               <ShishaView groups={sub.groups} onOpen={setOpenItem} />
+            ) : activeCat === "drinks" ? (
+              /* Boissons = verres verticaux. On ne les met JAMAIS dans une
+               * grille qui étire les cellules en large (ça coupe le haut/bas du
+               * verre quand il y a peu d'items). À la place : une rangée centrée
+               * de cartes PORTRAIT, comme la page à 5 colonnes qui rend bien.
+               * flex-1 + max-w les fait grandir jusqu'à 400px puis justify-center
+               * centre le tout ; ça marche de 1 à 5 items. (pas de flex-gap :
+               * non supporté Chrome 83, on utilise des marges) */
+              <div className="flex h-full w-full items-center justify-center">
+                {items.map((item, i) => (
+                  <div
+                    key={item.id}
+                    className="mx-1.5 sm:mx-2 h-full max-h-[640px] flex-1 max-w-[400px]"
+                  >
+                    <ItemCard
+                      item={item}
+                      index={i}
+                      onOpen={setOpenItem}
+                      spanClass=""
+                      fallbackAccent={fallbackAccent}
+                      isHero={false}
+                    />
+                  </div>
+                ))}
+              </div>
             ) : items.length === 1 ? (
-              /* Un seul plat : on ne l'étire pas sur tout le canvas (moche).
-               * On le centre à une taille proche d'une carte "héro" d'une page
-               * pleine, pour rester cohérent avec la grille multi-plats.
+              /* Un seul plat (food) : on ne l'étire pas sur tout le canvas.
+               * On le centre à une taille de carte "héro" d'une page pleine.
                * (pas d'aspect-ratio : non supporté par le WebView Chrome 83) */
               <div className="flex h-full w-full items-center justify-center">
                 <div className="h-full max-h-[540px] w-full max-w-[620px]">
