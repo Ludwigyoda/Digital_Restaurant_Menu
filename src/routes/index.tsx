@@ -3,6 +3,7 @@ import { MENU, type Item } from "@/data/menu";
 import { TopNav } from "@/components/menu/TopNav";
 import { SubTabs } from "@/components/menu/SubTabs";
 import { ItemCard } from "@/components/menu/ItemCard";
+import { ShishaView } from "@/components/menu/ShishaView";
 import { ItemModal } from "@/components/menu/ItemModal";
 import { UpdateButton } from "@/components/menu/UpdateButton";
 import { VipModal } from "@/components/menu/VipModal";
@@ -17,7 +18,9 @@ import { chunk, getGridLayout } from "@/lib/gridLayout";
 type Step = { catId: string; subId: string; groupId?: string };
 const STEPS: Step[] = MENU.flatMap((c) =>
   c.subs.flatMap((s) =>
-    s.groups
+    // Shisha reste une seule étape : on montre tous les parfums d'un coup à
+    // côté de la photo, pas un écran par groupe.
+    s.groups && s.id !== "shisha"
       ? s.groups.map((g) => ({ catId: c.id, subId: s.id, groupId: g.id }))
       : [{ catId: c.id, subId: s.id }],
   ),
@@ -144,10 +147,10 @@ export function MenuPage() {
         onSelect={handleSubSelect}
       />
 
-      <Breadcrumb sub={sub} group={group} stepIdx={stepIdx} total={STEPS.length} />
+      <Breadcrumb sub={sub} group={activeSub === "shisha" ? null : group} stepIdx={stepIdx} total={STEPS.length} />
 
       <section data-frame className="relative flex flex-1 overflow-hidden">
-        {sub.groups && (
+        {sub.groups && activeSub !== "shisha" && (
           <aside className="hidden md:flex w-44 shrink-0 flex-col space-y-1 border-r border-border/50 px-3 py-6">
             <div className="mb-3 px-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
               <span className="en-text">{sub.nameEn}</span>
@@ -186,7 +189,9 @@ export function MenuPage() {
               direction >= 0 ? "anim-slide-in-right" : "anim-slide-in-left"
             }`}
           >
-            {items.length === 1 ? (
+            {activeSub === "shisha" && sub.groups ? (
+              <ShishaView groups={sub.groups} onOpen={setOpenItem} />
+            ) : items.length === 1 ? (
               /* Un seul plat : on ne l'étire pas sur tout le canvas (moche).
                * On le centre à une taille proche d'une carte "héro" d'une page
                * pleine, pour rester cohérent avec la grille multi-plats.

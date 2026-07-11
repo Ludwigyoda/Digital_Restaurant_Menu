@@ -135,18 +135,11 @@ export const MENU: Category[] = [
             ],
           },
           {
-            id: "specialties",
-            nameEn: "Specialties",
-            nameZh: "招牌",
-            items: [
-              { id: "sp-quesabirria", nameEn: "Corn Quesabirria Soup", nameZh: "墨西哥炖牛肉汤", descEn: "Slow-cooked beef soup served with 3 corn quesabirria", descZh: "炖牛肉汤配3个玉米煎饼", price: 78 },
-            ],
-          },
-          {
             id: "bowls",
             nameEn: "Bowls",
             nameZh: "沙拉碗",
             items: [
+              { id: "sp-quesabirria", nameEn: "Corn Quesabirria Soup", nameZh: "墨西哥炖牛肉汤", descEn: "Slow-cooked beef soup served with 3 corn quesabirria", descZh: "炖牛肉汤配3个玉米煎饼", price: 78 },
               { id: "bw-birria", nameEn: "Birria Bowl", nameZh: "炖牛肉沙拉碗", descEn: "Slow-cooked beef cheek with herbs and chili, served over greens, beans and grilled vegetables", descZh: "慢炖牛腮肉配香草和辣椒搭配生菜、豆类和炒蔬菜", price: 78 },
               { id: "bw-pastor", nameEn: "Chicken Pastor Bowl", nameZh: "墨西哥帕多斯烤鸡肉沙拉碗", descEn: "Chicken pastor served over greens, beans and rice, grilled vegetables", descZh: "墨西哥鸡肉配蔬菜、豆类和米饭、炒蔬菜", price: 68 },
               { id: "bw-tinga", nameEn: "Chicken Tinga Bowl", nameZh: "墨西哥辣鸡肉沙拉碗", descEn: "Shredded chicken in smoky chipotle sauce, served over greens, beans, rice and grilled vegetables", descZh: "烟熏墨西哥辣椒酱鸡肉丝、配上蔬菜、豆类和米饭、炒蔬菜", price: 68 },
