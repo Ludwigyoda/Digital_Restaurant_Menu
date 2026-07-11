@@ -23,9 +23,11 @@
   --font-zh: "Noto Sans SC", "Source Han Sans SC", sans-serif;
 
   --cream: oklch(0.952 0.022 78);
-  /* Fond réchauffé + assombri pour compenser la dalle du kiosk (rendu riche
-   * au lieu du gris plat). Design d'origine : oklch(0.18 0.012 40). */
-  --night: oklch(0.155 0.021 42);
+  /* Fond NOIR NEUTRE profond. Sur la dalle 6 bits du kiosk, un brun sombre
+   * (ancien oklch(0.155 0.021 42) = rgb 20,9,6) virait au gris-brun boueux.
+   * On retire la teinte chaude (chroma 0) et on approfondit → lecture "vrai
+   * noir" plus propre. Le banding résiduel est cassé par .dither-overlay. */
+  --night: oklch(0.11 0 0);
 
   --terracotta: oklch(0.58 0.16 35);
   --talavera: oklch(0.58 0.08 195);
@@ -35,15 +37,17 @@
 
   --background: var(--night);
   --foreground: var(--cream);
-  --card: oklch(0.2 0.023 42);
+  /* Surfaces : même clarté qu'avant mais teinte quasi neutralisée pour
+   * s'accorder au fond noir neutre (gris-noir, plus brun). */
+  --card: oklch(0.2 0.006 42);
   --card-foreground: var(--cream);
-  --popover: oklch(0.2 0.023 42);
+  --popover: oklch(0.2 0.006 42);
   --popover-foreground: var(--cream);
   --primary: var(--terracotta);
   --primary-foreground: var(--cream);
-  --secondary: oklch(0.25 0.022 42);
+  --secondary: oklch(0.25 0.006 42);
   --secondary-foreground: var(--cream);
-  --muted: oklch(0.25 0.022 42);
+  --muted: oklch(0.25 0.006 42);
   --muted-foreground: oklch(0.7 0.02 60);
   --accent: var(--terracotta);
   --accent-foreground: var(--cream);
@@ -99,6 +103,24 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { scrollbar-width: none; }
   .text-balance { text-wrap: balance; }
+}
+
+/* ---- Grain de dithering global ----
+ * Une fine couche de bruit tuilé, fixe, par-dessus tout le rendu. Sur la dalle
+ * ~6 bits du kiosk, les proche-noirs (fond, dégradés de carte, photos sombres)
+ * se quantifient en BANDES visibles ("pixelisé"). Ce bruit perturbe le rendu
+ * final → casse les bandes, sans toucher visiblement les zones claires.
+ * Bruit gaussien gris, opaque, en data URI (aucune requête, aucun souci PWA) ;
+ * la force réelle est pilotée par `opacity` (réglage 0.04–0.08).
+ * Chrome 83 : background-image tuilé + position:fixed = trivial et peu coûteux. */
+.dither-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60; /* au-dessus du contenu, sous les modals (z-[70]+) et le toast */
+  pointer-events: none;
+  background-image: url("data:image/png;base64,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");
+  background-repeat: repeat;
+  opacity: 0.05;
 }
 
 /* Language toggling — driven by classes set on <html> via LangSwitcher.
@@ -213,7 +235,7 @@ html.lang-zh .en-text { display: none; }
 :fullscreen [data-frame],
 :-webkit-full-screen [data-frame] {
   border-radius: 1.25rem;
-  background: oklch(0.19 0.021 42);
+  background: oklch(0.14 0 0);
   overflow: hidden;
 }
 

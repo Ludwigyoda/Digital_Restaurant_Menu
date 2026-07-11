@@ -268,6 +268,11 @@ export function MenuPage() {
         </div>
       )}
 
+      {/* Grain de dithering global : casse le banding du proche-noir sur la
+          dalle 6 bits du kiosk (fond, dégradés, photos sombres). Fixe,
+          pointer-events:none, sous les modals. Voir .dither-overlay (styles.css). */}
+      <div className="dither-overlay" aria-hidden />
+
       {/* DIAGNOSTIC TEMPORAIRE : marqueur de build visible MÊME en plein écran
           (le footer, lui, est masqué en plein écran). Permet de vérifier quelle
           version tourne réellement sur le kiosk. À retirer une fois confirmé. */}

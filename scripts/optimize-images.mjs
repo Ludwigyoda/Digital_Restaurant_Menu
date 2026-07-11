@@ -3,8 +3,14 @@ import { readdir, stat, rm } from "node:fs/promises";
 import { join } from "node:path";
 
 const DIR = "src/assets/items";
-const MAX_W = 1024;
-const QUALITY = 78;
+const MAX_W = 1280;
+const QUALITY = 92;
+// chroma 4:4:4 (pas de sous-échantillonnage) : indispensable pour les zones
+// proche-noir (vins/bières) — le 4:2:0 par défaut y crée du banding/blocs.
+const CHROMA = "4:4:4";
+// FORCE=1 (ou --force) : ré-encode TOUT, même les JPG déjà < 250 KB. Sert à
+// re-passer l'existant aux nouveaux réglages une fois.
+const FORCE = process.env.FORCE === "1" || process.argv.includes("--force");
 
 // Process both JPG and PNG. PNGs are converted to JPG (resized + compressed)
 // and the original PNG is removed, so the kiosk only ships lightweight JPGs
@@ -18,15 +24,15 @@ for (const f of files) {
   const isPng = f.endsWith(".png");
   try {
     const before = (await stat(p)).size;
-    // Skip already-optimized JPGs (below 250 KB likely already done).
-    // PNGs are always processed (converted to JPG) regardless of size.
-    if (!isPng && before < 250 * 1024) {
+    // Skip already-optimized JPGs (below 250 KB likely already done), sauf en
+    // mode FORCE. PNGs are always processed (converted to JPG) regardless.
+    if (!isPng && !FORCE && before < 250 * 1024) {
       console.log(`${f.padEnd(28)} skipped (${(before / 1024).toFixed(0)} KB, already small)`);
       continue;
     }
     const buf = await sharp(p)
       .resize({ width: MAX_W, withoutEnlargement: true })
-      .jpeg({ quality: QUALITY, mozjpeg: true })
+      .jpeg({ quality: QUALITY, mozjpeg: true, chromaSubsampling: CHROMA })
       .toBuffer();
     const outPath = isPng ? p.replace(/\.png$/, ".jpg") : p;
     await sharp(buf).toFile(outPath);
