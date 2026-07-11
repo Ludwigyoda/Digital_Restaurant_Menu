@@ -30,7 +30,7 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   safelist: [
     // Classes de grille construites dynamiquement dans src/lib/gridLayout.ts
-    "grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4",
+    "grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5",
     "grid-rows-1", "grid-rows-2", "col-span-2", "row-span-2",
   ],
   theme: {

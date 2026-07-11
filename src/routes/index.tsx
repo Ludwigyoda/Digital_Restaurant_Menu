@@ -77,7 +77,7 @@ export function MenuPage() {
   const itemsPerPage = allItems.length <= 6 ? Math.max(allItems.length, 1) : 5;
   const pages = useMemo(() => chunk(allItems, itemsPerPage), [allItems, itemsPerPage]);
   const items = pages[Math.min(pageIdx, pages.length - 1)] ?? [];
-  const layout = getGridLayout(items.length);
+  const layout = getGridLayout(items.length, activeCat === "drinks");
   const fallbackAccent = sub.defaultAccent;
 
   const goToStep = (idx: number, dir: number) => {
