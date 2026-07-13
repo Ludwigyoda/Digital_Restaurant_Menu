@@ -210,7 +210,7 @@ export function MenuPage() {
                 {items.map((item, i) => (
                   <div
                     key={item.id}
-                    className="mx-1.5 sm:mx-2 h-full max-h-[640px] flex-1 max-w-[360px]"
+                    className="mx-1.5 sm:mx-2 h-full max-h-[640px] flex-1 max-w-[280px]"
                   >
                     <ItemCard
                       item={item}
