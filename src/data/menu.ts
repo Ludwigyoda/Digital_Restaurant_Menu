@@ -289,7 +289,6 @@ export const MENU: Category[] = [
             items: [
               { id: "lc-frozen-margarita-glass", nameEn: "Frozen Margarita (Glass)", nameZh: "冰冻玛格丽特（杯）", price: 80, accent: "saffron" },
               { id: "lc-frozen-margarita-jug", nameEn: "Frozen Margarita (Jug 1L)", nameZh: "冰冻玛格丽特（1升壶）", price: 198, accent: "saffron" },
-              { id: "lc-paloma-lupita", nameEn: "Paloma", nameZh: "帕洛玛", price: 80, accent: "fuchsia-mx" },
               { id: "lc-cantarito", nameEn: "Cantarito", nameZh: "坎塔里托", price: 80, accent: "terracotta" },
               { id: "lc-batanga", nameEn: "Batanga", nameZh: "巴坦加", price: 80, accent: "terracotta" },
               { id: "lc-margarita-lupita", nameEn: "Margarita", nameZh: "玛格丽特", price: 80, accent: "cactus" },
