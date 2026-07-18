@@ -59,7 +59,7 @@ export function ItemModal({
               alt={item.nameEn}
               width={1024}
               height={768}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
             />
           )}
         </div>

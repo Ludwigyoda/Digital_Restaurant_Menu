@@ -255,7 +255,6 @@ export const MENU: Category[] = [
               { id: "cl-old-fashioned", nameEn: "Old Fashioned", nameZh: "OLD FASHIONED", descEn: "Jim Beam, sugar, fresh orange, angostura bitter", descZh: "占边威士忌、糖、新鲜橙子、安格斯苦精酒", price: 80 },
               { id: "cl-pisco-sour", nameEn: "Pisco Sour", nameZh: "PISCO SOUR", descEn: "Pisco, lemon juice, sugar syrup, angostura bitter, egg white", descZh: "皮斯克酒、柠檬汁、糖浆、安格斯苦精酒、蛋清", price: 80 },
               { id: "cl-penicillin", nameEn: "Penicillin", nameZh: "PENICILLIN", descEn: "Ballantine's whisky, Laphroaig, ginger honey syrup, lemon juice", descZh: "百龄坛威士忌、拉弗格威士忌、生姜蜂蜜糖浆、柠檬汁", price: 80 },
-              { id: "cl-paloma", nameEn: "Paloma", nameZh: "PALOMA", descEn: "Olmeca, grapefruit syrup, grapefruit juice, soda water", descZh: "奥美加龙舌兰、西柚糖浆、西柚汁、苏打水", price: 80 },
               { id: "cl-negroni", nameEn: "Negroni", nameZh: "NEGRONI", descEn: "Beefeater, martini rosso, Campari", descZh: "必富达金酒、马天尼红威末酒、金巴利利口酒", price: 80 },
               { id: "cl-margarita", nameEn: "Margarita", nameZh: "MARGARITA", descEn: "Olmeca tequila, fresh lime, triple sec", descZh: "奥美加龙舌兰、新鲜青柠、柑橘味利口酒", price: 80 },
               { id: "cl-mojito", nameEn: "Mojito", nameZh: "MOJITO", descEn: "Havana 3 yrs, fresh lime, fresh mint, lime juice, sugar syrup", descZh: "哈瓦那3年、新鲜青柠、新鲜薄荷、青柠汁、糖浆", price: 80 },
