@@ -61,22 +61,9 @@ export function ItemCard({
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/55 to-transparent p-4 pt-10">
           <div className="flex items-end justify-between space-x-3">
             <div className="min-w-0">
-              <h3 className="en-text font-display text-lg leading-tight text-white truncate">
-                {item.nameEn}
-              </h3>
-              {showZh && (
-                <p className="zh mt-0.5 text-sm text-white/90 truncate">
-                  {item.nameZh}
-                </p>
-              )}
-              {isHero && item.descEn && (
-                <p className="en-text mt-1 line-clamp-2 text-[11px] text-white/60">
-                  {item.descEn}
-                </p>
-              )}
               {visibleAllergens.length > 0 && (
                 <div
-                  className="mt-1.5 flex items-center space-x-1 text-[12px]"
+                  className="mb-1.5 flex items-center space-x-1 text-[12px]"
                   aria-label="Allergens"
                 >
                   {visibleAllergens.map((id) => (
@@ -88,6 +75,19 @@ export function ItemCard({
                     </span>
                   ))}
                 </div>
+              )}
+              <h3 className={`${showZh ? "en-text " : ""}font-display text-lg leading-tight text-white truncate`}>
+                {item.nameEn}
+              </h3>
+              {showZh && (
+                <p className="zh mt-0.5 text-sm text-white/90 truncate">
+                  {item.nameZh}
+                </p>
+              )}
+              {isHero && item.descEn && (
+                <p className="en-text mt-1 line-clamp-2 text-[11px] text-white/60">
+                  {item.descEn}
+                </p>
               )}
             </div>
             <div className="shrink-0 text-white">

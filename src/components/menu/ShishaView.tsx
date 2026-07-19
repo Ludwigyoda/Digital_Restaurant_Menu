@@ -16,13 +16,11 @@ export function ShishaView({
 }) {
   return (
     <div className="grid h-full w-full grid-cols-1 gap-4 md:grid-cols-[2fr_3fr]">
-      <div className="hidden min-h-0 items-center justify-center md:flex">
-        <div className="relative h-full aspect-[628/1188] max-w-full overflow-hidden rounded-2xl border border-border/50 bg-secondary">
-          <img src={shishaImg} alt="Shisha" className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105" />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 pt-14">
-            <h2 className="en-text font-display text-2xl text-white">Shisha</h2>
-            <p className="zh text-lg text-white/85">水烟</p>
-          </div>
+      <div className="relative hidden overflow-hidden rounded-2xl border border-border/50 bg-secondary md:block">
+        <img src={shishaImg} alt="Shisha" className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105" />
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 pt-14">
+          <h2 className="en-text font-display text-2xl text-white">Shisha</h2>
+          <p className="zh text-lg text-white/85">水烟</p>
         </div>
       </div>
 
