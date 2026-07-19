@@ -210,16 +210,18 @@ export function MenuPage() {
                 {items.map((item, i) => (
                   <div
                     key={item.id}
-                    className="mx-1.5 sm:mx-2 h-full max-h-[640px] flex-1 max-w-[280px]"
+                    className="mx-1.5 sm:mx-2 flex h-full max-h-[640px] min-w-0 max-w-[280px] flex-1 items-center justify-center"
                   >
-                    <ItemCard
-                      item={item}
-                      index={i}
-                      onOpen={setOpenItem}
-                      spanClass=""
-                      fallbackAccent={fallbackAccent}
-                      isHero={false}
-                    />
+                    <div className="h-full aspect-[9/16] max-w-full">
+                      <ItemCard
+                        item={item}
+                        index={i}
+                        onOpen={setOpenItem}
+                        spanClass=""
+                        fallbackAccent={fallbackAccent}
+                        isHero={false}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
