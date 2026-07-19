@@ -16,11 +16,18 @@ export function ShishaView({
 }) {
   return (
     <div className="grid h-full w-full grid-cols-1 gap-4 md:grid-cols-[minmax(0,24rem)_1fr]">
-      <div className="relative hidden overflow-hidden rounded-2xl border border-border/50 bg-secondary md:block">
-        <img src={shishaImg} alt="Shisha" className="h-full w-full object-contain object-center transition-transform duration-700 hover:scale-105" />
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 pt-14">
-          <h2 className="en-text font-display text-2xl text-white">Shisha</h2>
-          <p className="zh text-lg text-white/85">水烟</p>
+      <div className="hidden h-full md:flex md:justify-center">
+        {/* Le panneau ÉPOUSE la photo : l'<img> en h-full w-auto prend toute la
+         * hauteur dispo et sa largeur suit le ratio → photo ENTIÈRE (jamais
+         * zoomée/coupée), AUCUNE bande vide, et piloté par la hauteur donc pas
+         * de débordement. Le cadre borduré colle à l'image. Kiosk-safe (pas
+         * d'aspect-ratio ni de hauteur fixe). */}
+        <div className="relative h-full overflow-hidden rounded-2xl border border-border/50 bg-secondary">
+          <img src={shishaImg} alt="Shisha" className="h-full w-auto max-w-full object-cover object-center transition-transform duration-700 hover:scale-105" />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 pt-14">
+            <h2 className="en-text font-display text-2xl text-white">Shisha</h2>
+            <p className="zh text-lg text-white/85">水烟</p>
+          </div>
         </div>
       </div>
 

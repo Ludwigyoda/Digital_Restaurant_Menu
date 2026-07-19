@@ -35,7 +35,11 @@ for (const f of files) {
     }
     const buf = await sharp(p)
       .resize({ width: MAX_W, withoutEnlargement: true })
-      .jpeg({ quality: QUALITY, mozjpeg: true, chromaSubsampling: CHROMA })
+      // BASELINE JPEG obligatoire : le vieux WebView Tencent X5/TBS (~Chrome 53)
+      // du kiosk NE DÉCODE PAS le JPEG progressif → cartes vides. C'était LE bug
+      // « les photos ne s'affichent pas » (rien à voir avec la résolution). mozjpeg
+      // encode en progressif par défaut, d'où mozjpeg:false + progressive:false.
+      .jpeg({ quality: QUALITY, mozjpeg: false, progressive: false, chromaSubsampling: CHROMA })
       .toBuffer();
     const outPath = isPng ? p.replace(/\.png$/, ".jpg") : p;
     await sharp(buf).toFile(outPath);

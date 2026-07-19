@@ -33,7 +33,8 @@ export function ItemModal({
   if (!item) return null;
 
   const allergens = detectAllergens(item);
-  const image = isShishaFlavor(item.id) ? shishaImg : ITEM_IMAGES[item.id];
+  const isShisha = isShishaFlavor(item.id);
+  const image = isShisha ? shishaImg : ITEM_IMAGES[item.id];
 
   return (
     <div
@@ -52,17 +53,35 @@ export function ItemModal({
           <X className="h-5 w-5" />
         </button>
 
-        <div className="bg-secondary portrait:h-[40vh] landscape:md:h-full landscape:md:aspect-auto aspect-[4/3]">
-          {image && (
-            <img
-              src={image}
-              alt={item.nameEn}
-              width={1024}
-              height={768}
-              className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
-            />
-          )}
-        </div>
+        {isShisha ? (
+          /* Shisha : photo portrait. Boîte calée au ratio de la photo (hack
+           * padding-bottom, kiosk-safe) et centrée → narguilé ENTIER, non zoomé
+           * (≠ bande du 4/3) et non minuscule (≠ object-contain à bandes). */
+          <div className="flex items-center justify-center bg-secondary p-4">
+            <div className="relative w-full max-w-[17rem] overflow-hidden rounded-xl">
+              <div style={{ paddingBottom: "177.6%" }} />
+              {image && (
+                <img
+                  src={image}
+                  alt={item.nameEn}
+                  className="absolute inset-0 h-full w-full object-cover object-center"
+                />
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="bg-secondary portrait:h-[40vh] landscape:md:h-full landscape:md:aspect-auto aspect-[4/3]">
+            {image && (
+              <img
+                src={image}
+                alt={item.nameEn}
+                width={1024}
+                height={768}
+                className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
+              />
+            )}
+          </div>
+        )}
 
         <div className="flex flex-col space-y-4 p-8 overflow-y-auto">
           <div>

@@ -210,7 +210,14 @@ export function MenuPage() {
                 {items.map((item, i) => (
                   <div
                     key={item.id}
-                    className="mx-1.5 sm:mx-2 h-full max-h-[640px] flex-1 max-w-[280px]"
+                    /* Largeur FIXE = 1/5 de la rangée (basis-1/5 + grow-0/shrink-0),
+                     * PAS flex-1 : sinon 3 cartes deviennent plus larges que 5 →
+                     * ratio de carte différent → object-cover rogne + zoome la
+                     * page à 3 et coupe la base du verre. À 1/5 fixe, une page de
+                     * 3 et une page de 5 ont des cartes de même ratio → rendu
+                     * identique. px (box-border) sert de gouttière (flex gap KO
+                     * sur Chrome 83). h-full → jamais de clip vertical de la base. */
+                    className="h-full max-h-[640px] shrink-0 grow-0 basis-1/5 max-w-[280px] px-1.5 sm:px-2"
                   >
                     <ItemCard
                       item={item}
