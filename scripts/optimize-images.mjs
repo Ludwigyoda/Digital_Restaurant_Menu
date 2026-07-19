@@ -3,8 +3,11 @@ import { readdir, stat, rm } from "node:fs/promises";
 import { join } from "node:path";
 
 const DIR = "src/assets/items";
-const MAX_W = 1280;
-const QUALITY = 92;
+// Kiosk = vieux WebView Tencent X5 (~Chrome 53) sur tablette RK3566 faible RAM :
+// des photos 1280px (~2,9 Mpx) saturent le budget de décodage → cartes vides.
+// 960px (~1,6 Mpx) reste net sur les cartes tout en divisant ~2× la RAM.
+const MAX_W = 960;
+const QUALITY = 86;
 // chroma 4:4:4 (pas de sous-échantillonnage) : indispensable pour les zones
 // proche-noir (vins/bières) — le 4:2:0 par défaut y crée du banding/blocs.
 const CHROMA = "4:4:4";

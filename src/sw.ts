@@ -40,7 +40,11 @@ registerRoute(
 );
 
 registerRoute(
-  ({ request, sameOrigin }) => sameOrigin && request.destination === "image",
+  // Match par extension d'URL (pas `request.destination` : absent du vieux
+  // WebView Tencent X5 ~Chrome 53 du kiosk → la route ne matchait jamais et
+  // les images n'étaient jamais mises en cache).
+  ({ url, sameOrigin }) =>
+    sameOrigin && /\.(jpe?g|png|webp|avif)$/i.test(url.pathname),
   new CacheFirst({
     cacheName: "menu-images",
     plugins: [
