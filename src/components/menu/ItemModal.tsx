@@ -6,6 +6,7 @@ import { hasCJK } from "@/lib/i18n";
 import { ALLERGEN_META, detectAllergens } from "@/lib/allergens";
 import { PriceTag } from "./PriceTag";
 import shishaImg from "@/assets/shisha.jpg";
+import { getImageFraming } from "@/data/imagePresentation";
 
 // Les parfums shisha (lv-/rv-) n'ont pas de photo propre : la vue Shisha les
 // liste en texte. Dans le détail, on montre la photo de narguilé de la catégorie.
@@ -35,6 +36,7 @@ export function ItemModal({
   const allergens = detectAllergens(item);
   const isShisha = isShishaFlavor(item.id);
   const image = isShisha ? shishaImg : ITEM_IMAGES[item.id];
+  const imageFraming = getImageFraming(item.id);
 
   return (
     <div
@@ -72,13 +74,22 @@ export function ItemModal({
         ) : (
           <div className="bg-secondary portrait:h-[40vh] landscape:md:h-full landscape:md:aspect-auto aspect-[4/3]">
             {image && (
-              <img
-                src={image}
-                alt={item.nameEn}
-                width={1024}
-                height={768}
-                className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
-              />
+              <div
+                className="h-full w-full"
+                style={{
+                  transform: `translateY(${imageFraming.translateY}%) scale(${imageFraming.scale})`,
+                  transformOrigin: imageFraming.transformOrigin,
+                }}
+              >
+                <img
+                  src={image}
+                  alt={item.nameEn}
+                  width={1024}
+                  height={768}
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                  style={{ objectPosition: imageFraming.objectPosition }}
+                />
+              </div>
             )}
           </div>
         )}

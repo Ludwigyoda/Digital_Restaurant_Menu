@@ -16,14 +16,15 @@ export function ShishaView({
 }) {
   return (
     <div className="grid h-full w-full grid-cols-1 gap-4 md:grid-cols-[minmax(0,24rem)_1fr]">
-      <div className="hidden h-full md:flex md:justify-center">
-        {/* Le panneau ÉPOUSE la photo : l'<img> en h-full w-auto prend toute la
-         * hauteur dispo et sa largeur suit le ratio → photo ENTIÈRE (jamais
-         * zoomée/coupée), AUCUNE bande vide, et piloté par la hauteur donc pas
-         * de débordement. Le cadre borduré colle à l'image. Kiosk-safe (pas
-         * d'aspect-ratio ni de hauteur fixe). */}
-        <div className="relative h-full overflow-hidden rounded-2xl border border-border/50 bg-secondary">
-          <img src={shishaImg} alt="Shisha" className="h-full w-auto max-w-full object-cover object-center transition-transform duration-700 hover:scale-105" />
+      <div className="hidden md:flex md:items-center md:justify-center">
+        {/* Boîte au ratio EXACT de la photo (768×1364 → 177.6%) via le hack
+         * padding-bottom. Kiosk-safe : PAS d'aspect-ratio et PAS de chaîne
+         * height:100% (qui s'effondre sur le vieux WebView ~Chrome 53 → image
+         * "noire"). L'<img> en absolute object-cover a donc TOUJOURS une boîte
+         * concrète → photo ENTIÈRE, aucune bande vide, jamais noire. */}
+        <div className="relative w-full max-w-[15rem] overflow-hidden rounded-2xl border border-border/50 bg-secondary">
+          <div style={{ paddingBottom: "177.6%" }} />
+          <img src={shishaImg} alt="Shisha" className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105" />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 pt-14">
             <h2 className="en-text font-display text-2xl text-white">Shisha</h2>
             <p className="zh text-lg text-white/85">水烟</p>

@@ -4,6 +4,7 @@ import { PriceTag } from "./PriceTag";
 import { ITEM_IMAGES } from "@/data/itemImages";
 import { hasCJK } from "@/lib/i18n";
 import { ALLERGEN_META, detectAllergens } from "@/lib/allergens";
+import { getImageFraming } from "@/data/imagePresentation";
 
 const accentMap: Record<NonNullable<Item["accent"]>, string> = {
   terracotta: "var(--terracotta)",
@@ -35,6 +36,7 @@ export function ItemCard({
   const allergens = detectAllergens(item);
   // Compact card shows max 3 emojis, hero up to 5
   const visibleAllergens = allergens.slice(0, isHero ? 5 : 3);
+  const imageFraming = getImageFraming(item.id);
 
   return (
     <button
@@ -45,14 +47,23 @@ export function ItemCard({
     >
       <div className="relative h-full w-full overflow-hidden bg-secondary">
         {image ? (
-          <img
-            src={image}
-            alt={item.nameEn}
-            loading="lazy"
-            width={1024}
-            height={768}
-            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-          />
+          <div
+            className="absolute inset-0"
+            style={{
+              transform: `translateY(${imageFraming.translateY}%) scale(${imageFraming.scale})`,
+              transformOrigin: imageFraming.transformOrigin,
+            }}
+          >
+            <img
+              src={image}
+              alt={item.nameEn}
+              loading="lazy"
+              width={1024}
+              height={768}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              style={{ objectPosition: imageFraming.objectPosition }}
+            />
+          </div>
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-secondary to-card" />
         )}
