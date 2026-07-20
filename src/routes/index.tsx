@@ -217,7 +217,7 @@ export function MenuPage() {
                      * 3 et une page de 5 ont des cartes de même ratio → rendu
                      * identique. px (box-border) sert de gouttière (flex gap KO
                      * sur Chrome 83). h-full → jamais de clip vertical de la base. */
-                    className="h-full max-h-[640px] shrink-0 grow-0 basis-1/5 max-w-[280px] px-1.5 sm:px-2"
+                    className="drink-card-slot h-full shrink-0 grow-0 basis-1/5 px-1.5 sm:px-2"
                   >
                     <ItemCard
                       item={item}
