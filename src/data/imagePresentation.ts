@@ -34,10 +34,12 @@ const wideFoodPrefixes = new Set(["bg", "br", "bw", "cv", "mn", "qa", "tc"]);
 
 const ITEM_FRAMING: Record<string, Partial<ImageFraming>> = {
   "as-cuban": { objectPosition: "50% 100%", scale: 1.07, transformOrigin: "50% 100%" },
-  "as-bull-kiss": { objectPosition: "50% 100%", scale: 1.08, transformOrigin: "50% 100%" },
+  "as-bull-kiss": { objectPosition: "50% 100%", scale: 1.16, transformOrigin: "50% 100%" },
   "as-asian-colada": { objectPosition: "50% 100%", scale: 1, translateY: 2.5, transformOrigin: "50% 100%" },
-  // Verres particulièrement hauts : garder le sommet et aligner la base.
-  "sh-blowjob": { objectPosition: "50% 100%", scale: 0.9, transformOrigin: "50% 100%" },
+  "sg-mrs-xiaomeisha": { objectPosition: "50% 50%", scale: 1.06, transformOrigin: "50% 76%" },
+  "sh-blowjob": { objectPosition: "50% 50%", scale: 1.4, translateY: 8, transformOrigin: "50% 70%" },
+  "sh-jager-bomb": { objectPosition: "50% 50%", scale: 1.55, translateY: 10, transformOrigin: "50% 72%" },
+  "sh-b52": { objectPosition: "50% 62%", translateY: 0, transformOrigin: "50% 100%" },
   "li-lemonade-tea": { objectPosition: "50% 68%" },
   "li-jamaica": { objectPosition: "50% 68%" },
   "be-blanche-bruges": { objectPosition: "50% 68%" },
