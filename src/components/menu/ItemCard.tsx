@@ -54,10 +54,19 @@ export function ItemCard({
               transformOrigin: imageFraming.transformOrigin,
             }}
           >
+            {/* PAS de loading="lazy" : sur le WebView Chrome 83 du kiosk, le
+              * calcul d'intersection avec le viewport est défaillant quand un
+              * ancêtre est en position absolue ET transformé — ce qui est
+              * exactement le cas du wrapper de cadrage juste au-dessus. Le
+              * chargement différé n'était alors JAMAIS déclenché : la photo
+              * n'était même pas demandée au serveur, en ligne comme hors ligne.
+              * C'était LE bug "aucune photo ne s'affiche" (les logos, eux,
+              * passaient : ils n'ont pas d'attribut loading).
+              * Aucun intérêt à le garder ici : 5 photos par page au maximum, et
+              * warmImageCache les a de toute façon déjà mises en cache. */}
             <img
               src={image}
               alt={item.nameEn}
-              loading="lazy"
               width={1024}
               height={768}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
