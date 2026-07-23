@@ -29,3 +29,10 @@ package-lock.json
 
 # Local image backups created during edits (not part of the app)
 src/assets/items_backup_*/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
