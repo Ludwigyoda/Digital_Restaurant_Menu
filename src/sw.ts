@@ -14,6 +14,45 @@ declare const self: ServiceWorkerGlobalScope;
 precacheAndRoute(self.__WB_MANIFEST);
 cleanupOutdatedCaches();
 
+// ---- Bascule immédiate vers la nouvelle version ----
+//
+// Un service worker qui s'installe reste par défaut en état `waiting` tant
+// qu'un seul client de l'ancienne version est encore ouvert. Sur le kiosk, deux
+// onglets du menu restent ouverts en permanence : la nouvelle version n'a donc
+// JAMAIS pu prendre la main. Résultat constaté : un kiosk figé 22 commits en
+// arrière (page Shisha en grille de 4, soit un build antérieur à 03da4f3),
+// pendant que le serveur, lui, était parfaitement à jour.
+//
+// L'ancien mécanisme reposait sur un message SKIP_WAITING envoyé par l'app —
+// donc sur la coopération du code DÉJÀ installé. Un kiosk trop ancien pour
+// l'envoyer ne pouvait plus jamais se mettre à jour : impasse définitive.
+//
+// skipWaiting() s'exécute ici, dans la NOUVELLE version, que le navigateur
+// télécharge et installe de lui-même. Elle n'a donc plus besoin de rien
+// demander à l'ancienne — c'est ce qui permet de débloquer même une machine
+// déjà coincée.
+self.addEventListener("install", () => {
+  void self.skipWaiting();
+});
+
+// Caches légitimes de la version courante. Tout le reste est du résidu d'une
+// version précédente : anciens précaches Workbox, et surtout l'ancien
+// "menu-images" empoisonné par le rewrite SPA d'EdgeOne (des pages HTML
+// enregistrées sous des URL de photos). On purge à chaque activation, ce qui
+// rend le nettoyage automatique à chaque déploiement.
+const KEEP = /^(workbox-precache|menu-images-v2$|google-fonts-)/;
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    (async () => {
+      const names = await caches.keys();
+      await Promise.all(names.filter((n) => !KEEP.test(n)).map((n) => caches.delete(n)));
+      // Prend le contrôle des onglets déjà ouverts sans attendre leur fermeture.
+      await self.clients.claim();
+    })(),
+  );
+});
+
 // Any in-app navigation that can't reach the network falls back to the
 // precached app shell so the kiosk never lands on a broken browser page.
 const navigationHandler = createHandlerBoundToURL("/index.html");

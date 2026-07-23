@@ -318,8 +318,12 @@ export function MenuPage() {
 
       {/* DIAGNOSTIC TEMPORAIRE : marqueur de build visible MÊME en plein écran
           (le footer, lui, est masqué en plein écran). Permet de vérifier quelle
-          version tourne réellement sur le kiosk. À retirer une fois confirmé. */}
-      <span className="pointer-events-none fixed bottom-1 left-1 z-[90] text-[8px] tracking-wider text-white/25">
+          version tourne réellement sur le kiosk.
+          Volontairement LISIBLE à l'œil nu : en text-[8px] text-white/25 il était
+          indéchiffrable, y compris sur une photo de l'écran — c'est ce qui a
+          empêché de voir pendant longtemps que le kiosk tournait 22 commits en
+          arrière. À repasser en discret une fois le kiosk validé. */}
+      <span className="pointer-events-none fixed bottom-1 left-1 z-[90] rounded bg-black/70 px-2 py-1 text-[13px] font-bold tracking-wider text-white">
         b{__BUILD_ID__}
       </span>
     </main>

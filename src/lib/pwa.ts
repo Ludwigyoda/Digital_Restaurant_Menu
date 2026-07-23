@@ -52,6 +52,19 @@ export function registerKioskSW() {
   if (registered || typeof window === "undefined") return;
   registered = true;
 
+  // Le service worker prend désormais la main dès son installation (skipWaiting
+  // + clientsClaim, voir src/sw.ts). Quand la bascule a lieu, l'onglet tourne
+  // encore sur l'ANCIEN bundle : on le recharge pour qu'il reprenne le nouveau.
+  // Le garde-fou `reloading` évite toute boucle de rechargement.
+  if ("serviceWorker" in navigator) {
+    let reloading = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloading) return;
+      reloading = true;
+      window.location.reload();
+    });
+  }
+
   updateSWFn = registerSW({
     immediate: true,
     onNeedRefresh() {
