@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 // Static SPA build deployed to Tencent EdgeOne Pages and loaded by Fully
 // Kiosk Browser on restaurant tablets. The PWA layer (manifest + service
 // worker + precache) is always on so kiosks keep working when the network
@@ -26,57 +28,53 @@ export default defineConfig({
   define: {
     __BUILD_ID__: JSON.stringify(BUILD_ID),
   },
-  plugins: [
-    react(),
-    tsconfigPaths(),
-    VitePWA({
-      injectRegister: false,
-      // "prompt" so the new SW stays in waiting until we explicitly send
-      // SKIP_WAITING on idle. The old build keeps serving customers until
-      // the swap is safe to apply.
-      registerType: "prompt",
-      strategies: "injectManifest",
-      srcDir: "src",
-      filename: "sw.ts",
-      includeAssets: ["apple-touch-icon.png", "icon-192.png", "icon-512.png"],
-      manifest: {
-        name: "La Lupita × Revolucion",
-        short_name: "La Lupita",
-        description: "Taqueria & Cocktail Bar — Menu",
-        start_url: "/",
-        scope: "/",
-        id: "/",
-        display: "fullscreen",
-        display_override: ["fullscreen", "standalone"],
-        orientation: "any",
-        background_color: "#1a1a1a",
-        theme_color: "#000000",
-        lang: "en",
-        categories: ["food", "lifestyle"],
-        icons: [
-          { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-          { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
-          { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
-          { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
-        ],
-      },
-      injectManifest: {
-        // IMPORTANT : on ne pré-cache QUE la coquille de l'app (js/css/html +
-        // icônes/manifest). Les ~16 Mo de photos NE sont plus dans le précache.
-        // Avant, le nouveau service worker devait télécharger les 16 Mo AVANT de
-        // pouvoir s'activer ; sur la connexion du kiosk (Chine, variable) ça
-        // n'aboutissait jamais → la mise à jour ne s'appliquait jamais et le
-        // kiosk restait bloqué sur l'ancienne version. Désormais l'install est
-        // minuscule → les mises à jour passent. Les photos sont mises en cache au
-        // premier affichage via la route CacheFirst "menu-images" (offline OK
-        // après une première navigation).
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
-        globIgnores: ["**/assets/*-*.{jpg,jpeg,webp,avif}"],
-        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-      },
-      devOptions: { enabled: false, type: "module" },
-    }),
-  ],
+  plugins: [react(), tsconfigPaths(), VitePWA({
+    injectRegister: false,
+    // "prompt" so the new SW stays in waiting until we explicitly send
+    // SKIP_WAITING on idle. The old build keeps serving customers until
+    // the swap is safe to apply.
+    registerType: "prompt",
+    strategies: "injectManifest",
+    srcDir: "src",
+    filename: "sw.ts",
+    includeAssets: ["apple-touch-icon.png", "icon-192.png", "icon-512.png"],
+    manifest: {
+      name: "La Lupita × Revolucion",
+      short_name: "La Lupita",
+      description: "Taqueria & Cocktail Bar — Menu",
+      start_url: "/",
+      scope: "/",
+      id: "/",
+      display: "fullscreen",
+      display_override: ["fullscreen", "standalone"],
+      orientation: "any",
+      background_color: "#1a1a1a",
+      theme_color: "#000000",
+      lang: "en",
+      categories: ["food", "lifestyle"],
+      icons: [
+        { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+        { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+        { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+        { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+      ],
+    },
+    injectManifest: {
+      // IMPORTANT : on ne pré-cache QUE la coquille de l'app (js/css/html +
+      // icônes/manifest). Les ~16 Mo de photos NE sont plus dans le précache.
+      // Avant, le nouveau service worker devait télécharger les 16 Mo AVANT de
+      // pouvoir s'activer ; sur la connexion du kiosk (Chine, variable) ça
+      // n'aboutissait jamais → la mise à jour ne s'appliquait jamais et le
+      // kiosk restait bloqué sur l'ancienne version. Désormais l'install est
+      // minuscule → les mises à jour passent. Les photos sont mises en cache au
+      // premier affichage via la route CacheFirst "menu-images" (offline OK
+      // après une première navigation).
+      globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
+      globIgnores: ["**/assets/*-*.{jpg,jpeg,webp,avif}"],
+      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+    },
+    devOptions: { enabled: false, type: "module" },
+  }), cloudflare()],
   build: {
     // Cible le moteur ancien du kiosk pour la syntaxe JS émise par esbuild/rollup.
     target: "chrome80",
