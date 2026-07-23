@@ -213,17 +213,29 @@ html.lang-zh .en-text { display: none; }
 }
 
 /* ---- Fullscreen presentation mode ----
- * Active uniquement quand <html> est en fullscreen (déclenché par le 4-tap
- * sur le sous-titre "Taqueria & Cocktail Bar"). Re-cadre le menu comme une
- * affiche centrée plutôt qu'un site web edge-to-edge.
+ * Re-cadre le menu comme une affiche centrée plutôt qu'un site web
+ * edge-to-edge.
+ *
+ * Actif dans DEUX situations, d'où le troisième sélecteur de chaque bloc :
+ *  - `:fullscreen` : fullscreen de l'API, déclenché par le 4-tap sur le
+ *    sous-titre "Taqueria & Cocktail Bar" (tablette, démo).
+ *  - `.kiosk-mode` : le kiosk permanent. Fully Kiosk masque les barres
+ *    système SANS appeler requestFullscreen, donc `:fullscreen` n'y matche
+ *    JAMAIS (cf. useKioskMode : "Fullscreen is NOT forced here"). Sans ce
+ *    sélecteur, tout ce bloc tombait sur le kiosk → cadre et alignement
+ *    non compactés, c'est-à-dire pas la mise en page validée.
+ * Les déclarations sont identiques dans les deux cas : là où `:fullscreen`
+ * matchait déjà, le rendu est inchangé au pixel près.
  */
 :fullscreen,
-:-webkit-full-screen {
+:-webkit-full-screen,
+.kiosk-mode {
   background: var(--background);
 }
 
 :fullscreen main,
-:-webkit-full-screen main {
+:-webkit-full-screen main,
+.kiosk-mode main {
   max-width: none;
   margin-inline: 0;
   padding: 0.25rem 0.75rem;
@@ -233,7 +245,8 @@ html.lang-zh .en-text { display: none; }
 /* Le canvas (grid des cartes) prend un léger fond et des coins arrondis
  * pour se détacher comme une "carte d'affichage" du fond environnant. */
 :fullscreen [data-frame],
-:-webkit-full-screen [data-frame] {
+:-webkit-full-screen [data-frame],
+.kiosk-mode [data-frame] {
   border-radius: 1.25rem;
   background: oklch(0.14 0 0);
   overflow: hidden;
@@ -241,42 +254,49 @@ html.lang-zh .en-text { display: none; }
 
 /* TopNav : nav row plus compact, logos plus petits */
 :fullscreen main > nav > div:first-child,
-:-webkit-full-screen main > nav > div:first-child {
+:-webkit-full-screen main > nav > div:first-child,
+.kiosk-mode main > nav > div:first-child {
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
 }
 :fullscreen main > nav img,
-:-webkit-full-screen main > nav img {
+:-webkit-full-screen main > nav img,
+.kiosk-mode main > nav img {
   height: 2.25rem;
 }
 
 /* SubTabs : padding vertical réduit (tap target préservé via min-h-[44px] interne) */
 :fullscreen main > nav + div,
-:-webkit-full-screen main > nav + div {
+:-webkit-full-screen main > nav + div,
+.kiosk-mode main > nav + div {
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
 }
 
 /* Breadcrumb : padding ultra-compact, garde le texte lisible */
 :fullscreen main > nav + div + div,
-:-webkit-full-screen main > nav + div + div {
+:-webkit-full-screen main > nav + div + div,
+.kiosk-mode main > nav + div + div {
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;
 }
 
 /* Canvas (zone grille) : padding et gap resserrés pour agrandir les cartes */
 :fullscreen [data-canvas],
-:-webkit-full-screen [data-canvas] {
+:-webkit-full-screen [data-canvas],
+.kiosk-mode [data-canvas] {
   padding: 0.5rem 0.75rem 1.25rem !important;
 }
 :fullscreen [data-canvas] > .grid,
-:-webkit-full-screen [data-canvas] > .grid {
+:-webkit-full-screen [data-canvas] > .grid,
+.kiosk-mode [data-canvas] > .grid {
   gap: 0.375rem !important;
 }
 
 /* Aside (sous-groupes md+) : un peu plus étroite pour rendre de la largeur */
 :fullscreen main aside,
-:-webkit-full-screen main aside {
+:-webkit-full-screen main aside,
+.kiosk-mode main aside {
   width: 9rem;
   padding: 1rem 0.5rem;
 }
@@ -284,17 +304,24 @@ html.lang-zh .en-text { display: none; }
 /* Typo bump : en fullscreen on lit le menu à ~40-50 cm, les tailles
  * d'origine sont calibrées pour ~25-30 cm. +1 step partout. */
 :fullscreen .en-text,
-:-webkit-full-screen .en-text {
+:-webkit-full-screen .en-text,
+.kiosk-mode .en-text {
   font-size: 1.05em;
 }
 :fullscreen h3.en-text,
-:-webkit-full-screen h3.en-text {
+:-webkit-full-screen h3.en-text,
+.kiosk-mode h3.en-text {
   font-size: 1.15em;
 }
 
 /* En fullscreen le client ne doit pas voir le footer "Up to date / Offline".
  * On le cache complètement — le client ne devrait jamais savoir qu'il
- * regarde une PWA. Le footer reste visible en mode fenêtré (staff debug). */
+ * regarde une PWA. Le footer reste visible en mode fenêtré (staff debug).
+ *
+ * VOLONTAIREMENT sans `.kiosk-mode`, contrairement aux blocs ci-dessus : sur le
+ * kiosk le footer reste visible tant qu'on diagnostique, car c'est lui qui
+ * porte l'identifiant de build, le moteur détecté et l'indicateur Offline.
+ * À basculer une fois le kiosk validé. */
 :fullscreen footer,
 :-webkit-full-screen footer {
   display: none;

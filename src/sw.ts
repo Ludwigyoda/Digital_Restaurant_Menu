@@ -49,7 +49,10 @@ registerRoute(
     cacheName: "menu-images",
     plugins: [
       new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new ExpirationPlugin({ maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 60 }),
+      // 141 photos + logos : à 200 la marge était trop courte, les dernières
+      // entrées évinçaient les premières et le kiosk repartait chercher des
+      // photos qu'il avait déjà eues.
+      new ExpirationPlugin({ maxEntries: 250, maxAgeSeconds: 60 * 60 * 24 * 60 }),
     ],
   }),
 );

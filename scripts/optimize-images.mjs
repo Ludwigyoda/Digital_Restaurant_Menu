@@ -2,6 +2,10 @@ import sharp from "sharp";
 import { readdir, stat, rm } from "node:fs/promises";
 import { join } from "node:path";
 
+// Sans ça, sharp garde le fichier source ouvert dans son cache et la ré-écriture
+// en place échoue sous Windows ("unable to open for write").
+sharp.cache(false);
+
 const DIR = "src/assets/items";
 // Kiosk = vieux WebView Tencent X5 (~Chrome 53) sur tablette RK3566 faible RAM :
 // des photos 1280px (~2,9 Mpx) saturent le budget de décodage → cartes vides.
@@ -15,10 +19,24 @@ const CHROMA = "4:4:4";
 // re-passer l'existant aux nouveaux réglages une fois.
 const FORCE = process.env.FORCE === "1" || process.argv.includes("--force");
 
+// Fichiers nommés en argument : ne traite QUE ceux-là, et sans le garde-fou des
+// 250 KB (il est fait pour éviter de re-compresser en boucle un lot déjà sain,
+// pas pour protéger un fichier qu'on désigne explicitement). Sert à rattraper
+// une image qui a échappé à la politique — un JPEG repassé en progressif ou une
+// photo au-dessus de MAX_W — sans ré-encoder les ~140 autres pour rien.
+const ONLY = process.argv.slice(2).filter((a) => /\.(jpg|png)$/i.test(a));
+
 // Process both JPG and PNG. PNGs are converted to JPG (resized + compressed)
 // and the original PNG is removed, so the kiosk only ships lightweight JPGs
 // and the import.meta.glob never ends up with a .jpg/.png id collision.
-const files = (await readdir(DIR)).filter((f) => f.endsWith(".jpg") || f.endsWith(".png"));
+const all = (await readdir(DIR)).filter((f) => f.endsWith(".jpg") || f.endsWith(".png"));
+const files = ONLY.length ? ONLY : all;
+for (const f of ONLY) {
+  if (!all.includes(f)) {
+    console.error(`${f} introuvable dans ${DIR}`);
+    process.exit(1);
+  }
+}
 let totalBefore = 0;
 let totalAfter = 0;
 
@@ -29,7 +47,7 @@ for (const f of files) {
     const before = (await stat(p)).size;
     // Skip already-optimized JPGs (below 250 KB likely already done), sauf en
     // mode FORCE. PNGs are always processed (converted to JPG) regardless.
-    if (!isPng && !FORCE && before < 250 * 1024) {
+    if (!isPng && !FORCE && !ONLY.length && before < 250 * 1024) {
       console.log(`${f.padEnd(28)} skipped (${(before / 1024).toFixed(0)} KB, already small)`);
       continue;
     }
