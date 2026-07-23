@@ -40,6 +40,9 @@ const ITEM_FRAMING: Record<string, Partial<ImageFraming>> = {
   "sh-blowjob": { objectPosition: "50% 50%", scale: 1.4, translateY: 8, transformOrigin: "50% 70%" },
   "sh-jager-bomb": { objectPosition: "50% 50%", scale: 1.55, translateY: 10, transformOrigin: "50% 72%" },
   "sh-b52": { objectPosition: "50% 62%", translateY: 0, transformOrigin: "50% 100%" },
+  // Verre un peu petit dans la carte : léger agrandissement ancré sur la base
+  // du verre pour qu'il ne descende pas sous le bandeau nom/prix.
+  "cl-godfather": { scale: 1.12, transformOrigin: "50% 78%" },
   "li-lemonade-tea": { objectPosition: "50% 68%" },
   "li-jamaica": { objectPosition: "50% 68%" },
   "be-blanche-bruges": { objectPosition: "50% 68%" },
