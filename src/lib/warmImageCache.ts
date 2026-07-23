@@ -1,4 +1,5 @@
 import { ITEM_IMAGES } from "@/data/itemImages";
+import { applyUpdateNow } from "@/lib/pwa";
 
 // Les photos ne sont PAS dans le précache du service worker (voir globIgnores
 // dans vite.config) : le précache resterait bloqué sur ~16 Mo à installer avant
@@ -16,8 +17,12 @@ import { ITEM_IMAGES } from "@/data/itemImages";
 // en train de regarder.
 const DELAY_BETWEEN_MS = 150;
 const START_DELAY_MS = 4000;
+// Deux photos suffisent à écarter un incident isolé, sans laisser le kiosk
+// tourner longtemps sur un build périmé.
+const STALE_THRESHOLD = 2;
 
 let started = false;
+let staleHits = 0;
 
 export function warmImageCache() {
   if (started || typeof window === "undefined") return;
@@ -34,6 +39,21 @@ export function warmImageCache() {
     // décodeur. Un échec (hors ligne) est sans conséquence : on réessaiera au
     // prochain démarrage.
     fetch(url, { cache: "force-cache" })
+      .then((r) => {
+        // EdgeOne renvoie l'index.html en 200 pour tout chemin absent. Une photo
+        // qui revient en text/html signifie donc que ce build demande des
+        // hachages qui n'existent plus côté serveur : il est périmé. On bascule
+        // sur le service worker en attente au lieu d'attendre une intervention
+        // sur place — c'est ce qui laissait le kiosk sans photos.
+        const type = (r.headers.get("content-type") || "").toLowerCase();
+        if (r.ok && type && !type.startsWith("image/")) {
+          staleHits++;
+          if (staleHits >= STALE_THRESHOLD) {
+            applyUpdateNow();
+            i = urls.length; // stoppe le préchargement, un rechargement arrive
+          }
+        }
+      })
       .catch(() => {})
       .then(() => {
         window.setTimeout(next, DELAY_BETWEEN_MS);

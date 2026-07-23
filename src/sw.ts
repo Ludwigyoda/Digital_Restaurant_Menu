@@ -39,6 +39,32 @@ registerRoute(
   }),
 );
 
+// Valide le TYPE de contenu, pas seulement le statut HTTP.
+//
+// EdgeOne Pages ne renvoie jamais 404 : tout chemin absent renvoie l'index.html
+// avec un statut 200, y compris sous /assets/. Quand le kiosk tourne sur un
+// build dont les hachages de photos n'existent plus côté serveur, chaque photo
+// revient donc en "200 + text/html". Un CacheableResponsePlugin({statuses:[200]})
+// n'y voit que du feu et ENREGISTRE LA PAGE HTML SOUS L'URL DE LA PHOTO. Comme
+// CacheFirst ne revalide jamais, l'empoisonnement est définitif : plus aucune
+// photo ne s'affiche, même une fois le réseau et le bon build revenus.
+//
+// cacheWillUpdate      : rien qui ne soit une image n'entre dans le cache.
+// cachedResponseWillBeUsed : une entrée déjà empoisonnée n'est plus resservie
+//                        (elle est ignorée, la requête repart au réseau).
+const isImage = {
+  cacheWillUpdate: async ({ response }: { response: Response }) => {
+    if (!response || response.status !== 200) return null;
+    const type = response.headers.get("content-type") || "";
+    return type.toLowerCase().startsWith("image/") ? response : null;
+  },
+  cachedResponseWillBeUsed: async ({ cachedResponse }: { cachedResponse?: Response }) => {
+    if (!cachedResponse) return undefined;
+    const type = cachedResponse.headers.get("content-type") || "";
+    return type.toLowerCase().startsWith("image/") ? cachedResponse : undefined;
+  },
+};
+
 registerRoute(
   // Match par extension d'URL (pas `request.destination` : absent du vieux
   // WebView Tencent X5 ~Chrome 53 du kiosk → la route ne matchait jamais et
@@ -46,9 +72,12 @@ registerRoute(
   ({ url, sameOrigin }) =>
     sameOrigin && /\.(jpe?g|png|webp|avif)$/i.test(url.pathname),
   new CacheFirst({
-    cacheName: "menu-images",
+    // v2 : le cache "menu-images" du kiosk contient des pages HTML enregistrées
+    // sous des URL de photos (voir isImage ci-dessous). Il n'est pas
+    // récupérable, on repart à zéro.
+    cacheName: "menu-images-v2",
     plugins: [
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      isImage,
       // 141 photos + logos : à 200 la marge était trop courte, les dernières
       // entrées évinçaient les premières et le kiosk repartait chercher des
       // photos qu'il avait déjà eues.
